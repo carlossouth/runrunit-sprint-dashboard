@@ -36,19 +36,36 @@ export async function GET(
       });
     }
 
-    // Fetch tasks
-    const tasksRes = await fetch('https://runrun.it/api/v1.0/tasks?limit=1000', {
-      headers: {
-        'App-Key': APP_KEY,
-        'User-Token': USER_TOKEN
-      }
-    });
+    // Fetch tasks (both active and closed)
+    const [activeTasksRes, closedTasksRes] = await Promise.all([
+      fetch('https://runrun.it/api/v1.0/tasks?limit=1000&is_closed=false', {
+        headers: {
+          'App-Key': APP_KEY,
+          'User-Token': USER_TOKEN
+        }
+      }),
+      fetch('https://runrun.it/api/v1.0/tasks?limit=1000&is_closed=true', {
+        headers: {
+          'App-Key': APP_KEY,
+          'User-Token': USER_TOKEN
+        }
+      })
+    ]);
 
-    if (!tasksRes.ok) {
-      throw new Error(`Failed to fetch tasks: ${tasksRes.statusText}`);
+    if (!activeTasksRes.ok) {
+      throw new Error(`Failed to fetch active tasks: ${activeTasksRes.statusText}`);
+    }
+    if (!closedTasksRes.ok) {
+      throw new Error(`Failed to fetch closed tasks: ${closedTasksRes.statusText}`);
     }
 
-    const tasks = await tasksRes.json();
+    const activeTasks = await activeTasksRes.json();
+    const closedTasks = await closedTasksRes.json();
+
+    const tasks = [
+      ...(Array.isArray(activeTasks) ? activeTasks : []),
+      ...(Array.isArray(closedTasks) ? closedTasks : [])
+    ];
     
     // Filter tasks by IdSprint custom field (custom_142)
     const sprintTasks = tasks.filter((t: any) => {
