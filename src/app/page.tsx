@@ -358,7 +358,7 @@ export default function Dashboard() {
 
       <main className={`flex-1 overflow-auto relative z-10 transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0c] text-neutral-100' : 'bg-surface-50 text-gray-800'}`} data-testid="main-content">
         <div className="min-w-[1100px]">
-          <div className={`grid grid-cols-[minmax(200px,2fr)_minmax(150px,1fr)_1fr_1fr_1fr_1fr] sticky top-0 z-20 px-8 py-4 text-[10px] font-bold uppercase tracking-widest shadow-sm transition-colors duration-300 ${theme === 'dark' ? 'bg-[#121214] border-b border-neutral-800/80 text-neutral-500' : 'bg-white border-b border-gray-100 text-gray-400'}`}>
+          <div className={`grid grid-cols-[minmax(200px,2fr)_minmax(150px,1fr)_1fr_1fr_1fr_1fr] sticky top-0 z-20 px-8 py-4 text-[10px] font-bold uppercase tracking-widest shadow-sm transition-colors duration-300 ${theme === 'dark' ? 'bg-[#121214] border-b border-neutral-800/80 text-neutral-500' : 'bg-white border-b border-gray-200 text-gray-400'}`}>
             <div>Identificador da Demanda</div>
             <div className="pr-8">Etapa Atual</div>
             <div className="pr-8">Back-end [INV/PRV]</div>
@@ -387,7 +387,7 @@ export default function Dashboard() {
 
               const borderBottomClass = isWorking
                 ? (theme === 'dark' ? 'border-b border-emerald-500/20' : 'border-b border-emerald-500/10')
-                : (theme === 'dark' ? 'border-b border-neutral-800/40' : 'border-b border-gray-100');
+                : (theme === 'dark' ? 'border-b border-neutral-800/40' : 'border-b border-gray-200');
 
               const borderLeftClass = isWorking
                 ? 'border-l-4 border-l-status-done'
