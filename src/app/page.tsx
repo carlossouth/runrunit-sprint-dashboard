@@ -40,16 +40,24 @@ function getRoleAssignments(assignments: any[], roleKeywords: string[], excludeK
 }
 
 export default function Dashboard() {
-  const [sprintId, setSprintId] = useState('Sprint_25052026');
+  const [sprintId, setSprintId] = useState('');
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any[]>([]);
   const [error, setError] = useState('');
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [searchHistory, setSearchHistory] = useState<string[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('sprint-dashboard-theme') as 'light' | 'dark';
     if (savedTheme) {
       setTheme(savedTheme);
+    }
+
+    // Carrega historico no mount
+    const savedHistory = localStorage.getItem('sprint-dashboard-history');
+    if (savedHistory) {
+      setSearchHistory(JSON.parse(savedHistory));
     }
   }, []);
 
@@ -59,26 +67,45 @@ export default function Dashboard() {
     localStorage.setItem('sprint-dashboard-theme', nextTheme);
   };
 
-  // Optional auto-fetch on mount
+  const clearHistory = () => {
+    localStorage.removeItem('sprint-dashboard-history');
+    setSearchHistory([]);
+  };
+
+  // Optional auto-fetch on mount using persisted sprint ID
   useEffect(() => {
-    if (sprintId) {
-      handleSearch();
+    const savedSprint = localStorage.getItem('sprint-dashboard-id');
+    if (savedSprint) {
+      setSprintId(savedSprint);
+      handleSearch(undefined, savedSprint);
     }
   }, []);
 
-  const handleSearch = async (e?: React.FormEvent) => {
+  const handleSearch = async (e?: React.FormEvent, customId?: string) => {
     if (e) e.preventDefault();
-    if (!sprintId.trim()) return;
+    const idToSearch = (customId || sprintId).trim();
+    if (!idToSearch) return;
 
     setLoading(true);
     setError('');
     
     try {
-      const res = await fetch(`/api/sprint/${sprintId.trim()}`);
+      const res = await fetch(`/api/sprint/${idToSearch}`);
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || 'Erro ao buscar sprint');
       
       setData(json.data || []);
+      
+      // Salva no localStorage e gerencia historico
+      localStorage.setItem('sprint-dashboard-id', idToSearch);
+      
+      const saved = localStorage.getItem('sprint-dashboard-history');
+      let history: string[] = saved ? JSON.parse(saved) : [];
+      history = history.filter(h => h !== idToSearch);
+      history.unshift(idToSearch);
+      history = history.slice(0, 5);
+      localStorage.setItem('sprint-dashboard-history', JSON.stringify(history));
+      setSearchHistory(history);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -182,10 +209,19 @@ export default function Dashboard() {
           </h1>
         </div>
 
-        {/* Lado Direito: Campo de Busca */}
-        <div className="flex items-center">
-          <form onSubmit={handleSearch} className="flex items-center space-x-2">
-            <div className="flex items-center bg-black/20 rounded border border-white/20 focus-within:border-accent-500 focus-within:bg-black/40 transition-all duration-300">
+        {/* Lado Direito: Campo de Busca com Historico Dropdown */}
+        <div className="flex items-center relative" onBlur={(e) => {
+          // Fecha o historico apenas se o foco foi para um elemento fora desta div container
+          if (!e.currentTarget.contains(e.relatedTarget)) {
+            setShowHistory(false);
+          }
+        }}>
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            handleSearch();
+            setShowHistory(false);
+          }} className="flex items-center space-x-2">
+            <div className="relative flex items-center bg-black/20 rounded border border-white/20 focus-within:border-accent-500 focus-within:bg-black/40 transition-all duration-300">
               <div className="pl-2 pr-1 text-white/50">
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
               </div>
@@ -196,8 +232,49 @@ export default function Dashboard() {
                 placeholder="Pesquisar Sprint ID..." 
                 value={sprintId}
                 onChange={(e) => setSprintId(e.target.value)}
+                onFocus={() => setShowHistory(true)}
                 className="bg-transparent border-none outline-none text-xs font-bold text-white placeholder-white/50 py-1.5 pr-2 w-32 focus:w-48 transition-all duration-300"
               />
+              
+              {/* Dropdown de Historico */}
+              {showHistory && searchHistory.length > 0 && (
+                <div className={`absolute top-full right-0 mt-2 w-56 shadow-2xl rounded border py-2 z-50 text-[10px] backdrop-blur-md ${theme === 'dark' ? 'bg-[#121214]/95 border-neutral-800 text-neutral-300' : 'bg-white/95 border-gray-200 text-gray-700'}`}>
+                  <div className={`px-3 py-1 font-bold text-[8px] uppercase tracking-widest ${theme === 'dark' ? 'text-neutral-500' : 'text-gray-400'}`}>
+                    Pesquisas Recentes
+                  </div>
+                  <div className="mt-1 max-h-40 overflow-y-auto">
+                    {searchHistory.map((item, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => {
+                          setSprintId(item);
+                          handleSearch(undefined, item);
+                          setShowHistory(false);
+                        }}
+                        className={`w-full text-left px-3 py-1.5 font-bold transition-colors flex items-center justify-between group ${theme === 'dark' ? 'hover:bg-neutral-800/80 hover:text-white' : 'hover:bg-gray-100 hover:text-brand-900'}`}
+                      >
+                        <span className="truncate">{item}</span>
+                        <span className={`text-[7px] font-extrabold opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-wider ${theme === 'dark' ? 'text-accent-400' : 'text-accent-500'}`}>
+                          Buscar ↗
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                  <div className={`border-t mt-1.5 pt-1.5 px-3 flex justify-between items-center ${theme === 'dark' ? 'border-neutral-800' : 'border-gray-100'}`}>
+                    <button
+                      type="button"
+                      onMouseDown={(e) => {
+                        e.preventDefault(); // Evita perder foco antes de computar clique
+                        clearHistory();
+                      }}
+                      className="text-[8px] font-extrabold text-rose-500 hover:text-rose-400 transition-colors uppercase tracking-widest"
+                    >
+                      Limpar histórico
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
             <button 
               type="submit" 
