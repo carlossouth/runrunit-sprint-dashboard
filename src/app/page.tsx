@@ -142,7 +142,8 @@ export default function Dashboard() {
     totalPrev += taskPrev;
 
     const stageNum = parseInt(task.status, 10);
-    if (!isNaN(stageNum) && stageNum >= 15) {
+    const isCompletedStage = !isNaN(stageNum) && stageNum >= 15;
+    if (isCompletedStage) {
       completedPrev += taskPrev;
       completedTasks++;
     }
@@ -173,10 +174,12 @@ export default function Dashboard() {
 
     totalExec += taskExec;
 
-    if (backExec > backE && backE > 0) overLimitCount.back++;
-    if (frontExec > frontE && frontE > 0) overLimitCount.front++;
-    if (mobileExec > mobileE && mobileE > 0) overLimitCount.mobile++;
-    if (qaExec > qaE && qaE > 0) overLimitCount.qa++;
+    if (!isCompletedStage) {
+      if (backExec > backE && backE > 0) overLimitCount.back++;
+      if (frontExec > frontE && frontE > 0) overLimitCount.front++;
+      if (mobileExec > mobileE && mobileE > 0) overLimitCount.mobile++;
+      if (qaExec > qaE && qaE > 0) overLimitCount.qa++;
+    }
   });
 
   let progressPercent = 0;
@@ -347,9 +350,9 @@ export default function Dashboard() {
             
             <div className={`absolute top-full left-0 mt-2 w-80 shadow-lg border rounded-md p-3 opacity-0 invisible group-hover/kpi:opacity-100 group-hover/kpi:visible transition-all duration-200 z-50 ${theme === 'dark' ? 'bg-[#1a1a1f] border-neutral-800 text-neutral-300' : 'bg-white border-gray-200 text-gray-600'}`}>
               <div className="text-xs font-medium leading-relaxed">
-                Exibe a quantidade de demandas onde o tempo apontado (<strong>Executado</strong>) por uma determinada disciplina excedeu a sua respectiva estimativa de horas (<strong>Previsto</strong>).
+                Exibe a quantidade de demandas ativas (em andamento) onde o tempo apontado (<strong>Executado</strong>) por uma determinada disciplina excedeu a sua respectiva estimativa de horas (<strong>Previsto</strong>).
                 <br/><br/>
-                O cálculo avalia o estouro de forma isolada e independente para cada área de atuação (Back, Front, APP, QA) dentro de uma mesma demanda.
+                O cálculo avalia o estouro de forma isolada para cada área de atuação (Back, Front, APP, QA). <strong>Demandas a partir da etapa "15 - Agendar Deploy" (inclusive) não são contabilizadas neste indicador</strong>.
               </div>
             </div>
           </div>
