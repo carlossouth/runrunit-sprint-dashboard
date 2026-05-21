@@ -99,6 +99,7 @@ export async function GET(
         status: task.board_stage_name,
         status_id: task.board_stage_id,
         is_working_on: task.is_working_on || false,
+        type: task.type_name || 'Sem tipo',
         estimates: {
           back: estBack,
           front: estFront,

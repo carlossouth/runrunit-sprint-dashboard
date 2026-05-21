@@ -125,6 +125,8 @@ export default function Dashboard() {
     qa: 0
   };
 
+  let typeCounts: Record<string, number> = {};
+
   let breakdown = {
     back: { prev: 0, exec: 0 },
     front: { prev: 0, exec: 0 },
@@ -133,6 +135,10 @@ export default function Dashboard() {
   };
 
   data.forEach(task => {
+    // Agrupa e conta por tipo de demanda
+    const taskType = task.type || 'Sem tipo';
+    typeCounts[taskType] = (typeCounts[taskType] || 0) + 1;
+
     const backE = parseEstimate(task.estimates.back);
     const frontE = parseEstimate(task.estimates.front);
     const mobileE = parseEstimate(task.estimates.mobile);
@@ -189,6 +195,9 @@ export default function Dashboard() {
     // Fallback caso as demandas não tenham tempo estimado (conta pela quantidade de demandas)
     progressPercent = Math.round((completedTasks / data.length) * 100);
   }
+
+  // Ordena os tipos de demandas por quantidade decrescente
+  const sortedTypes = Object.entries(typeCounts).sort((a, b) => b[1] - a[1]);
 
   return (
     <div className={`h-screen flex flex-col antialiased overflow-hidden ${theme === 'dark' ? 'bg-[#0a0a0c] text-neutral-100' : 'bg-surface-50 text-gray-800'}`}>
@@ -299,6 +308,35 @@ export default function Dashboard() {
       <div className={`flex-none h-12 flex items-center px-6 text-sm relative z-30 shadow-sm transition-colors duration-300 ${theme === 'dark' ? 'bg-[#121214] border-b border-neutral-800/80 text-neutral-200' : 'bg-white border-b border-gray-200 text-gray-800'}`} data-testid="kpi-ribbon">
         <div className="flex items-center space-x-8">
           
+          <div className="relative group cursor-pointer">
+            <div className="flex items-center">
+              <span className={`mr-2 text-xs uppercase font-bold tracking-wider ${theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}`}>Demandas Totais:</span>
+              <span className={`font-bold ${theme === 'dark' ? 'text-white' : 'text-brand-900'}`} data-testid="kpi-total-demands">
+                {data.length}
+              </span>
+            </div>
+            {data.length > 0 && (
+              <div className={`absolute top-full left-0 mt-2 w-64 shadow-lg border rounded-md p-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 ${theme === 'dark' ? 'bg-[#1a1a1f] border-neutral-800 text-neutral-300' : 'bg-white border-gray-200 text-gray-600'}`}>
+                <h3 className={`text-xs font-bold mb-2 border-b pb-1 ${theme === 'dark' ? 'text-white border-neutral-800' : 'text-brand-900 border-gray-100'}`}>Tipos de Demandas</h3>
+                <div className="space-y-1.5 text-[10px] font-mono">
+                  {sortedTypes.map(([type, count]) => {
+                    const percentage = data.length > 0 ? Math.round((count / data.length) * 100) : 0;
+                    return (
+                      <div key={type} className="flex justify-between items-center">
+                        <span className={`truncate mr-2 ${theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}`} title={type}>{type}:</span>
+                        <span className={`font-bold flex-shrink-0 ${theme === 'dark' ? 'text-white' : 'text-brand-900'}`}>
+                          {count} <span className={`text-[8px] font-normal ${theme === 'dark' ? 'text-neutral-500' : 'text-gray-400'}`}>({percentage}%)</span>
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className={`h-4 w-px ${theme === 'dark' ? 'bg-neutral-800' : 'bg-gray-300'}`}></div>
+
           <div className="relative group cursor-pointer">
             <div className="flex items-center">
               <span className={`mr-2 text-xs uppercase font-bold tracking-wider ${theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}`}>Horas Totais:</span>
