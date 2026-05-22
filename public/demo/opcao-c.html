@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opção C - Rota /mobile - Identidade Visual South</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              900: '#0F3A5F',
+              800: '#144B7A',
+              700: '#1A5A90',
+            },
+            accent: {
+              500: '#00ACE7',
+              400: '#33BCEB',
+            },
+            surface: {
+              950: '#0a0a0c',
+              900: '#1E1E24',
+              800: '#2A2A32',
+              700: '#363640',
+              600: '#4D4D5C',
+              100: '#E8E8ED',
+              50: '#F4F4F6',
+            },
+            status: {
+              done: '#22C55E',
+              wait: '#FDE047',
+              api: '#F97316',
+              na: '#4D4D5C',
+              over: '#EF4444',
+            }
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: radial-gradient(circle at center, #0F2027 0%, #050a0f 100%);
+    }
+
+    /* Safari frame simulation */
+    .browser-container {
+      box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8);
+      border: 12px solid #1e293b;
+      border-radius: 40px;
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 9 / 19.5;
+      max-height: 800px;
+    }
+
+    .browser-bar {
+      background: #1e293b;
+      height: 44px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .browser-address {
+      background: rgba(0, 0, 0, 0.35);
+      width: 70%;
+      height: 24px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.6);
+      font-family: monospace;
+    }
+
+    .active-tab-style {
+      background: linear-gradient(135deg, #00ACE7 0%, #0087b8 100%) !important;
+      color: #ffffff !important;
+      border-color: transparent !important;
+      box-shadow: 0 4px 10px rgba(0, 172, 231, 0.3);
+    }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .scrollbar-hide {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+
+    /* Expandable elements with elastic easing */
+    .hidden-info {
+      transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, margin-top 0.3s ease;
+    }
+
+    /* Card micro-interactions */
+    .expandable-card {
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+    }
+    .expandable-card:active {
+      transform: scale(0.985);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+  <!-- Heading -->
+  <div class="text-center mb-6 text-white max-w-lg select-none">
+    <span class="bg-brand-700/30 text-accent-400 border border-brand-700/50 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Protótipo Atualizado</span>
+    <h1 class="text-xl font-bold mt-2 tracking-tight">Opção C - Rota /mobile</h1>
+    <p class="text-slate-400 text-[11px] mt-1 px-4 leading-relaxed">Fontes e dimensionamento dos cards padronizados milimetricamente para um visual leve, equilibrado e extremamente agradável aos olhos.</p>
+  </div>
+
+  <!-- Browser Simulation Shell -->
+  <div id="device-container" class="browser-container w-full max-w-[360px] dark bg-surface-950 flex flex-col relative transition-colors duration-300">
+    
+    <!-- Safari Header -->
+    <div class="browser-bar text-white select-none">
+      <div class="flex space-x-1.5 absolute left-4">
+        <div class="w-2 h-2 rounded-full bg-red-500/80"></div>
+        <div class="w-2 h-2 rounded-full bg-yellow-500/80"></div>
+        <div class="w-2 h-2 rounded-full bg-green-500/80"></div>
+      </div>
+      <div class="browser-address">
+        <span class="mr-1 text-white/30 text-[10px]">🔒</span> south.rri.dev/mobile
+      </div>
+      <span class="text-[10px] text-white/50 absolute right-4 cursor-pointer">↻</span>
+    </div>
+
+    <!-- App Header (Identidade Visual South) -->
+    <header class="bg-brand-900 text-white flex-none h-12 flex items-center justify-between px-4 border-b border-white/10 select-none">
+      <div class="flex items-center space-x-2.5">
+        <!-- Logo South (simulada com logomarca) -->
+        <div onclick="toggleTheme()" class="cursor-pointer hover:opacity-85 active:scale-95 transition-all flex items-center" title="Clique para alternar o tema">
+          <span class="font-extrabold text-[10px] tracking-wider uppercase bg-white/15 px-2 py-0.5 rounded-md">SOUTH</span>
+        </div>
+        <div class="h-3.5 w-px bg-white/20"></div>
+        <h1 class="font-sans font-semibold text-[10px] tracking-widest uppercase">Sprint Dash</h1>
+      </div>
+      <!-- Theme Indicator -->
+      <button onclick="toggleTheme()" class="w-7 h-7 rounded-full bg-black/20 hover:bg-black/35 active:scale-90 transition-all flex items-center justify-center text-xs">
+        <span id="theme-btn-icon">☀️</span>
+      </button>
+    </header>
+
+    <!-- Top Tabs (Disciplines selector in actual visual pattern) -->
+    <div class="flex-none border-b select-none transition-colors duration-300 bg-white dark:bg-[#121214] border-gray-100 dark:border-neutral-900/60">
+      <div class="flex space-x-2 overflow-x-auto scrollbar-hide py-2.5 px-4" id="tabs-container">
+        <button onclick="switchTab('all')" id="tab-all" class="discipline-tab px-3.5 py-1.5 border rounded-full text-[10.5px] font-semibold uppercase tracking-wider transition-all border-accent-500 bg-accent-500 text-white active-tab-style whitespace-nowrap">Todas</button>
+        <button onclick="switchTab('back')" id="tab-back" class="discipline-tab px-3.5 py-1.5 border rounded-full text-[10.5px] font-semibold uppercase tracking-wider transition-all border-slate-100 dark:border-neutral-800/80 text-slate-500 dark:text-neutral-400 whitespace-nowrap bg-transparent">Back-end</button>
+        <button onclick="switchTab('front')" id="tab-front" class="discipline-tab px-3.5 py-1.5 border rounded-full text-[10.5px] font-semibold uppercase tracking-wider transition-all border-slate-100 dark:border-neutral-800/80 text-slate-500 dark:text-neutral-400 whitespace-nowrap bg-transparent">Front-end</button>
+        <button onclick="switchTab('mob')" id="tab-mob" class="discipline-tab px-3.5 py-1.5 border rounded-full text-[10.5px] font-semibold uppercase tracking-wider transition-all border-slate-100 dark:border-neutral-800/80 text-slate-500 dark:text-neutral-400 whitespace-nowrap bg-transparent">Mobile</button>
+        <button onclick="switchTab('qa')" id="tab-qa" class="discipline-tab px-3.5 py-1.5 border rounded-full text-[10.5px] font-semibold uppercase tracking-wider transition-all border-slate-100 dark:border-neutral-800/80 text-slate-500 dark:text-neutral-400 whitespace-nowrap bg-transparent">QA & Teste</button>
+      </div>
+    </div>
+
+    <!-- Main Content Box -->
+    <div class="flex-grow overflow-y-auto p-4 pb-20 space-y-4 transition-colors duration-300 bg-slate-50/70 dark:bg-surface-950 text-slate-800 dark:text-neutral-200">
+      
+      <!-- KPI Ribbon Mobile adaptation -->
+      <div class="grid grid-cols-2 gap-3 select-none">
+        <div class="p-3 border rounded-2xl flex flex-col justify-between transition-all bg-white dark:bg-[#121214] border-gray-100 dark:border-neutral-900/60 shadow-sm shadow-slate-100/50 dark:shadow-none">
+          <span class="text-[9.5px] font-semibold text-slate-400 dark:text-neutral-500 uppercase tracking-wider">Progresso</span>
+          <span class="font-bold text-emerald-500 dark:text-emerald-400 text-[13px] tracking-tight mt-1.5">74% Concluído</span>
+        </div>
+        <div class="p-3 border rounded-2xl flex flex-col justify-between transition-all bg-white dark:bg-[#121214] border-gray-100 dark:border-neutral-900/60 shadow-sm shadow-slate-100/50 dark:shadow-none">
+          <span class="text-[9.5px] font-semibold text-slate-400 dark:text-neutral-500 uppercase tracking-wider">Atenção</span>
+          <span class="font-bold text-rose-500 dark:text-rose-400 text-[13px] tracking-tight mt-1.5 flex items-center">
+            <span class="w-1.5 h-1.5 rounded-full bg-rose-500 mr-1.5 animate-pulse"></span>
+            1 Estouro Crítico
+          </span>
+        </div>
+      </div>
+
+      <!-- Demand List -->
+      <div class="space-y-3" id="demands-list-container">
+        
+        <!-- Demand Card 1 (Is Working On / Over Limit Back-end) -->
+        <div data-discipline="back front" class="expandable-card border rounded-2xl p-4 space-y-3 relative cursor-pointer bg-white dark:bg-[#121214] border-gray-100 dark:border-neutral-900/60 shadow-sm hover:shadow-md dark:shadow-none" onclick="toggleCard(this)">
+          <div class="flex items-start justify-between min-w-0">
+            <div class="min-w-0 flex-1 pr-2">
+              <div class="flex items-center space-x-2 flex-wrap gap-y-1">
+                <span class="text-[11px] font-bold text-accent-500 hover:underline tracking-wide">#98715</span>
+                
+                <!-- Em Execução Pulse Badge identical to desktop -->
+                <span class="inline-flex items-center space-x-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/15 select-none">
+                  <span class="relative flex h-1.5 w-1.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-done opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-status-done"></span>
+                  </span>
+                  <span class="text-[8.5px] font-bold text-status-done uppercase tracking-wider leading-none">Em execução</span>
+                </span>
+              </div>
+              <h3 class="font-semibold text-[13px] leading-snug mt-1.5 text-slate-800 dark:text-neutral-100 tracking-tight truncate" title="Integração com API de Pagamentos">
+                Integração com API de Pagamentos
+              </h3>
+            </div>
+            
+            <!-- Etapa Badge -->
+            <span class="text-[9px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0 text-slate-500 bg-slate-100 dark:text-neutral-400 dark:bg-neutral-800/80">
+              Etapa 08
+            </span>
+          </div>
+
+          <!-- Progressive discipline bars adapted to mobile -->
+          <div class="space-y-3 border-t pt-3 border-slate-50 dark:border-neutral-800/40 select-none">
+            <!-- Back-end -->
+            <div class="space-y-1">
+              <div class="flex justify-between text-[9.5px] font-semibold">
+                <span class="text-rose-500 dark:text-rose-400 uppercase tracking-wider">Back-end [ESTOURO CRÍTICO]</span>
+                <span class="text-rose-500 dark:text-rose-400 font-mono text-[11px] font-semibold">22:30h <span class="text-slate-400 font-normal">/ 16:00h</span></span>
+              </div>
+              <div class="w-full h-1.5 rounded-full bg-slate-100 dark:bg-neutral-800/80">
+                <div class="bg-gradient-to-r from-rose-500 to-red-600 h-full rounded-full" style="width: 100%"></div>
+              </div>
+            </div>
+            <!-- Front-end -->
+            <div class="space-y-1">
+              <div class="flex justify-between text-[9.5px] font-semibold">
+                <span class="text-accent-500 dark:text-accent-400 uppercase tracking-wider">Front-end [Em Andamento]</span>
+                <span class="font-mono text-[11px] text-slate-600 dark:text-neutral-300 font-medium">08:00h <span class="text-slate-400 font-normal">/ 12:00h</span></span>
+              </div>
+              <div class="w-full h-1.5 rounded-full bg-slate-100 dark:bg-neutral-800/80">
+                <div class="bg-gradient-to-r from-accent-500 to-sky-400 h-full rounded-full" style="width: 66%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Expanded section -->
+          <div class="hidden-info max-h-0 overflow-hidden opacity-0 space-y-3 text-xs">
+            <div class="h-[1px] bg-slate-50 dark:bg-neutral-800/40"></div>
+            <span class="text-[9.5px] font-semibold uppercase tracking-wider text-slate-400 dark:text-neutral-500 block mb-1">Profissionais Alocados</span>
+            
+            <div class="flex items-center space-x-3">
+              <!-- Avatar dynamic styling -->
+              <div class="relative shrink-0 select-none">
+                <div class="w-8 h-8 rounded-full border-2 border-emerald-500/30 flex items-center justify-center font-bold text-[11px] text-white bg-gradient-to-br from-brand-800 to-brand-900 shadow-sm">CG</div>
+                <span class="absolute bottom-0 right-0 flex h-2.5 w-2.5">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-done opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-status-done"></span>
+                </span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center space-x-1.5">
+                  <span class="text-[12px] font-semibold text-emerald-500 leading-none">Carlos Galis</span>
+                  <span class="text-[8px] font-bold uppercase px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-status-done tracking-wider">PLAY</span>
+                </div>
+                <span class="text-[9.5px] uppercase text-slate-400 dark:text-neutral-500 tracking-wider">Back-end dev</span>
+              </div>
+              <span class="text-[11px] font-mono font-semibold text-rose-500 dark:text-rose-400 bg-rose-500/5 px-2.5 py-0.5 rounded-full border border-rose-500/10">22:30h</span>
+            </div>
+
+            <div class="flex items-center space-x-3">
+              <div class="relative shrink-0 select-none">
+                <div class="w-8 h-8 rounded-full border border-slate-100 dark:border-neutral-800 flex items-center justify-center font-bold text-[11px] text-white bg-gradient-to-br from-slate-700 to-slate-800 shadow-sm">MA</div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <span class="text-[12px] font-semibold leading-none text-slate-700 dark:text-neutral-300">Matheus Andrade</span>
+                <p class="text-[9.5px] uppercase text-slate-400 dark:text-neutral-500 tracking-wider">Front-end dev</p>
+              </div>
+              <span class="text-[11px] font-mono font-medium text-slate-600 dark:text-neutral-400 bg-slate-100 dark:bg-neutral-800/80 px-2.5 py-0.5 rounded-full">08:00h</span>
+            </div>
+            
+            <p class="text-[11px] leading-relaxed bg-slate-50/80 dark:bg-neutral-900/40 border border-slate-100/50 dark:border-neutral-850 p-3 rounded-xl text-slate-500 dark:text-neutral-400 font-sans">
+              Status: Desenvolvimento em andamento. O back-end sofreu estouro crítico devido à refatoração das credenciais de sandbox na adquirente.
+            </p>
+          </div>
+        </div>
+
+        <!-- Demand Card 2 (Normal In Progress) -->
+        <div data-discipline="front" class="expandable-card border rounded-2xl p-4 space-y-3 relative cursor-pointer bg-white dark:bg-[#121214] border-gray-100 dark:border-neutral-900/60 shadow-sm hover:shadow-md dark:shadow-none" onclick="toggleCard(this)">
+          <div class="flex items-start justify-between min-w-0">
+            <div class="min-w-0 flex-1 pr-2">
+              <div class="flex items-center space-x-2 flex-wrap gap-y-1">
+                <span class="text-[11px] font-bold text-accent-500 hover:underline tracking-wide">#98654</span>
+              </div>
+              <h3 class="font-semibold text-[13px] leading-snug mt-1.5 text-slate-800 dark:text-neutral-100 tracking-tight truncate" title="Painel Administrativo de Usuários">
+                Painel Administrativo de Usuários
+              </h3>
+            </div>
+            
+            <span class="text-[9px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0 text-slate-500 bg-slate-100 dark:text-neutral-400 dark:bg-neutral-800/80">
+              Etapa 05
+            </span>
+          </div>
+
+          <!-- Progressive discipline bars adapted to mobile -->
+          <div class="space-y-3 border-t pt-3 border-slate-50 dark:border-neutral-800/40 select-none">
+            <!-- Front-end -->
+            <div class="space-y-1">
+              <div class="flex justify-between text-[9.5px] font-semibold">
+                <span class="text-accent-500 dark:text-accent-400 uppercase tracking-wider">Front-end [Em Andamento]</span>
+                <span class="font-mono text-[11px] text-slate-600 dark:text-neutral-300 font-medium">14:15h <span class="text-slate-400 font-normal">/ 20:00h</span></span>
+              </div>
+              <div class="w-full h-1.5 rounded-full bg-slate-100 dark:bg-neutral-800/80">
+                <div class="bg-gradient-to-r from-accent-500 to-sky-400 h-full rounded-full" style="width: 71%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Expanded section -->
+          <div class="hidden-info max-h-0 overflow-hidden opacity-0 space-y-3 text-xs">
+            <div class="h-[1px] bg-slate-50 dark:bg-neutral-800/40"></div>
+            <span class="text-[9.5px] font-semibold uppercase tracking-wider text-slate-400 dark:text-neutral-500 block mb-1">Profissionais Alocados</span>
+            
+            <div class="flex items-center space-x-3">
+              <div class="relative shrink-0 select-none">
+                <div class="w-8 h-8 rounded-full border border-slate-100 dark:border-neutral-800 flex items-center justify-center font-bold text-[11px] text-white bg-gradient-to-br from-slate-700 to-slate-800 shadow-sm">MA</div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <span class="text-[12px] font-semibold leading-none text-slate-700 dark:text-neutral-300">Matheus Andrade</span>
+                <p class="text-[9.5px] uppercase text-slate-400 dark:text-neutral-500 tracking-wider">Front-end dev</p>
+              </div>
+              <span class="text-[11px] font-mono font-medium text-slate-600 dark:text-neutral-400 bg-slate-100 dark:bg-neutral-800/80 px-2.5 py-0.5 rounded-full">14:15h</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Demand Card 3 (Mobile waiting) -->
+        <div data-discipline="mob" class="expandable-card border rounded-2xl p-4 space-y-3 relative cursor-pointer bg-white dark:bg-[#121214] border-gray-100 dark:border-neutral-900/60 shadow-sm hover:shadow-md dark:shadow-none" onclick="toggleCard(this)">
+          <div class="flex items-start justify-between min-w-0">
+            <div class="min-w-0 flex-1 pr-2">
+              <div class="flex items-center space-x-2 flex-wrap gap-y-1">
+                <span class="text-[11px] font-bold text-accent-500 hover:underline tracking-wide">#98600</span>
+              </div>
+              <h3 class="font-semibold text-[13px] leading-snug mt-1.5 text-slate-800 dark:text-neutral-100 tracking-tight truncate" title="Ajustes nas Telas Mobile">
+                Ajustes nas Telas Mobile
+              </h3>
+            </div>
+            
+            <span class="text-[9px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0 text-slate-500 bg-slate-100 dark:text-neutral-400 dark:bg-neutral-800/80">
+              Etapa 02
+            </span>
+          </div>
+
+          <!-- Progressive discipline bars adapted to mobile -->
+          <div class="space-y-3 border-t pt-3 border-slate-50 dark:border-neutral-800/40 select-none">
+            <!-- Mobile -->
+            <div class="space-y-1">
+              <div class="flex justify-between text-[9.5px] font-semibold text-slate-400 dark:text-neutral-500">
+                <span class="uppercase tracking-wider">Mobile [Aguardando]</span>
+                <span class="font-mono text-[11px] font-medium">00:00h <span class="text-slate-400 font-normal">/ 12:00h</span></span>
+              </div>
+              <div class="w-full h-1.5 rounded-full bg-slate-100 dark:bg-neutral-800/80">
+                <div class="bg-slate-350 dark:bg-neutral-700 h-full rounded-full" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Expanded section -->
+          <div class="hidden-info max-h-0 overflow-hidden opacity-0 space-y-3 text-xs">
+            <div class="h-[1px] bg-slate-50 dark:bg-neutral-800/40"></div>
+            <p class="text-[11px] leading-relaxed text-slate-550 dark:text-neutral-400 font-sans p-3 bg-slate-50/50 dark:bg-neutral-900/20 rounded-xl border border-slate-100/30 dark:border-neutral-800/20">
+              Demanda de refinamento da UI mobile em fila no backlog do app, aguardando finalização da API de pagamentos.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Footer Tabbar (Identidade visual simplificada) -->
+    <div class="absolute bottom-0 left-0 right-0 h-14 border-t flex items-center justify-around select-none z-30 px-4 transition-colors duration-300 bg-white/90 dark:bg-[#121214]/95 backdrop-blur-md border-gray-100 dark:border-neutral-900/60">
+      <button class="flex flex-col items-center justify-center w-full h-full text-accent-500">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+        <span class="text-[9px] font-bold uppercase tracking-widest mt-1">Sprint</span>
+      </button>
+      <button class="flex flex-col items-center justify-center w-full h-full text-slate-400 dark:text-neutral-500 hover:text-accent-500 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        <span class="text-[9px] font-bold uppercase tracking-widest mt-1">Alertas</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Tab switching controller
+    function switchTab(discipline) {
+      // Manage active tabs
+      const tabs = document.querySelectorAll('.discipline-tab');
+      tabs.forEach(tab => {
+        tab.classList.remove('active-tab-style');
+        tab.classList.add('border-slate-100', 'dark:border-neutral-800/80', 'text-slate-500', 'dark:text-neutral-400');
+      });
+
+      const activeTab = document.getElementById(`tab-${discipline}`);
+      activeTab.classList.add('active-tab-style');
+      activeTab.classList.remove('border-slate-100', 'dark:border-neutral-800/80', 'text-slate-500', 'dark:text-neutral-400');
+
+      // Filter list cards
+      const cards = document.querySelectorAll('.expandable-card');
+      cards.forEach(card => {
+        if (discipline === 'all') {
+          card.style.display = 'block';
+        } else {
+          const disciplines = card.getAttribute('data-discipline').split(' ');
+          if (disciplines.includes(discipline)) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        }
+      });
+    }
+
+    // Expandable card controller
+    function toggleCard(cardElement) {
+      const infoBlock = cardElement.querySelector('.hidden-info');
+      const isCollapsed = infoBlock.classList.contains('max-h-0');
+
+      // Collapse all other cards first for a clean experience
+      document.querySelectorAll('.hidden-info').forEach(info => {
+        info.classList.add('max-h-0', 'opacity-0');
+        info.classList.remove('opacity-100', 'mt-3');
+        info.style.maxHeight = '0';
+        info.parentElement.classList.remove('border-accent-500', 'dark:border-accent-500/50', 'ring-1', 'ring-accent-500/20');
+      });
+
+      if (isCollapsed) {
+        // Expand
+        infoBlock.classList.remove('max-h-0', 'opacity-0');
+        infoBlock.classList.add('opacity-100', 'mt-3');
+        infoBlock.style.maxHeight = '500px'; // Set manual limit to trigger transition
+        cardElement.classList.add('border-accent-500', 'dark:border-accent-500/50', 'ring-1', 'ring-accent-500/20');
+      } else {
+        // Collapse
+        infoBlock.classList.add('max-h-0', 'opacity-0');
+        infoBlock.classList.remove('opacity-100', 'mt-3');
+        infoBlock.style.maxHeight = '0';
+        cardElement.classList.remove('border-accent-500', 'dark:border-accent-500/50', 'ring-1', 'ring-accent-500/20');
+      }
+    }
+
+    // Theme Switcher for simulation
+    function toggleTheme() {
+      const device = document.getElementById('device-container');
+      const icon = document.getElementById('theme-btn-icon');
+      
+      if (device.classList.contains('dark')) {
+        device.classList.remove('dark');
+        icon.innerHTML = '🌙';
+      } else {
+        device.classList.add('dark');
+        icon.innerHTML = '☀️';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 // Helper to convert Runrun.it "HH:MM" or seconds to total SECONDS
-function parseEstimate(val: string | number | null): number {
+export function parseEstimate(val: string | number | null): number {
   if (!val) return 0;
   if (typeof val === 'number') {
     return val; // assumed seconds
@@ -21,7 +22,7 @@ function parseEstimate(val: string | number | null): number {
 }
 
 // Format seconds into HH:MM:SS
-function formatTime(totalSeconds: number): string {
+export function formatTime(totalSeconds: number): string {
   if (!totalSeconds || isNaN(totalSeconds)) return "00:00:00";
   const h = Math.floor(totalSeconds / 3600);
   const m = Math.floor((totalSeconds % 3600) / 60);
@@ -30,7 +31,7 @@ function formatTime(totalSeconds: number): string {
 }
 
 // Filter assignments by role keywords
-function getRoleAssignments(assignments: any[], roleKeywords: string[], excludeKeywords: string[] = []) {
+export function getRoleAssignments(assignments: any[], roleKeywords: string[], excludeKeywords: string[] = []) {
   return assignments.filter(a => {
     const r = a.role?.toLowerCase() || '';
     const hasRole = roleKeywords.some(kw => r.includes(kw));
@@ -40,6 +41,7 @@ function getRoleAssignments(assignments: any[], roleKeywords: string[], excludeK
 }
 
 export default function Dashboard() {
+  const router = useRouter();
   const [sprintId, setSprintId] = useState('');
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any[]>([]);
@@ -47,6 +49,21 @@ export default function Dashboard() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [showHistory, setShowHistory] = useState(false);
+
+  // Redirecionamento inteligente para Mobile
+  useEffect(() => {
+    const isMobileDevice = () => {
+      if (typeof window === 'undefined') return false;
+      const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+      const isMobileUA = /android|iphone|ipad|ipod|iemobile|opera mini/i.test(userAgent);
+      const isSmallScreen = window.innerWidth < 768;
+      return isMobileUA || isSmallScreen;
+    };
+
+    if (isMobileDevice()) {
+      router.push('/mobile');
+    }
+  }, [router]);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('sprint-dashboard-theme') as 'light' | 'dark';
@@ -310,35 +327,6 @@ export default function Dashboard() {
           
           <div className="relative group cursor-pointer">
             <div className="flex items-center">
-              <span className={`mr-2 text-xs uppercase font-bold tracking-wider ${theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}`}>Demandas Totais:</span>
-              <span className={`font-bold ${theme === 'dark' ? 'text-white' : 'text-brand-900'}`} data-testid="kpi-total-demands">
-                {data.length}
-              </span>
-            </div>
-            {data.length > 0 && (
-              <div className={`absolute top-full left-0 mt-2 w-64 shadow-lg border rounded-md p-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 ${theme === 'dark' ? 'bg-[#1a1a1f] border-neutral-800 text-neutral-300' : 'bg-white border-gray-200 text-gray-600'}`}>
-                <h3 className={`text-xs font-bold mb-2 border-b pb-1 ${theme === 'dark' ? 'text-white border-neutral-800' : 'text-brand-900 border-gray-100'}`}>Tipos de Demandas</h3>
-                <div className="space-y-1.5 text-[10px] font-mono">
-                  {sortedTypes.map(([type, count]) => {
-                    const percentage = data.length > 0 ? Math.round((count / data.length) * 100) : 0;
-                    return (
-                      <div key={type} className="flex justify-between items-center">
-                        <span className={`truncate mr-2 ${theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}`} title={type}>{type}:</span>
-                        <span className={`font-bold flex-shrink-0 ${theme === 'dark' ? 'text-white' : 'text-brand-900'}`}>
-                          {count} <span className={`text-[8px] font-normal ${theme === 'dark' ? 'text-neutral-500' : 'text-gray-400'}`}>({percentage}%)</span>
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className={`h-4 w-px ${theme === 'dark' ? 'bg-neutral-800' : 'bg-gray-300'}`}></div>
-
-          <div className="relative group cursor-pointer">
-            <div className="flex items-center">
               <span className={`mr-2 text-xs uppercase font-bold tracking-wider ${theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}`}>Horas Totais:</span>
               <span className={`font-bold ${theme === 'dark' ? 'text-white' : 'text-brand-900'}`} data-testid="kpi-total-hours">
                 <span className={`text-[10px] mr-1 uppercase ${theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}`}>Exec:</span> {formatTime(totalExec)} <span className="text-gray-400 font-normal mx-1">/</span> <span className="text-[10px] text-gray-400 mr-1 uppercase">Prev:</span> <span className={`font-normal ${theme === 'dark' ? 'text-neutral-300' : 'text-gray-500'}`}>{formatTime(totalPrev)}</span>
@@ -365,6 +353,38 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
+          </div>
+
+          <div className={`h-4 w-px ${theme === 'dark' ? 'bg-neutral-800' : 'bg-gray-300'}`}></div>
+
+          <div className="relative group cursor-pointer">
+            <div className="flex items-center">
+              <span className={`mr-2 text-xs uppercase font-bold tracking-wider ${theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}`}>Demandas:</span>
+              <span className={`font-bold ${theme === 'dark' ? 'text-white' : 'text-brand-900'}`} data-testid="kpi-total-demands">
+                <span className={`text-[10px] mr-1 uppercase ${theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}`}>Total:</span> {data.length} <span className="text-gray-400 font-normal mx-1">/</span> <span className={`text-[10px] mr-1 uppercase ${theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}`}>Concluídas:</span> <span className={`font-normal ${theme === 'dark' ? 'text-neutral-300' : 'text-gray-500'}`}>{completedTasks}</span>
+              </span>
+            </div>
+            {data.length > 0 && (
+              <div className={`absolute top-full left-0 mt-2 w-64 shadow-lg border rounded-md p-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 ${theme === 'dark' ? 'bg-[#1a1a1f] border-neutral-800 text-neutral-300' : 'bg-white border-gray-200 text-gray-600'}`}>
+                <h3 className={`text-xs font-bold mb-2 border-b pb-1 ${theme === 'dark' ? 'text-white border-neutral-800' : 'text-brand-900 border-gray-100'}`}>Tipos de Demandas</h3>
+                <div className="space-y-1.5 text-[10px] font-mono mb-2">
+                  {sortedTypes.map(([type, count]) => {
+                    const percentage = data.length > 0 ? Math.round((count / data.length) * 100) : 0;
+                    return (
+                      <div key={type} className="flex justify-between items-center">
+                        <span className={`truncate mr-2 ${theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}`} title={type}>{type}:</span>
+                        <span className={`font-bold flex-shrink-0 ${theme === 'dark' ? 'text-white' : 'text-brand-900'}`}>
+                          {count} <span className={`text-[8px] font-normal ${theme === 'dark' ? 'text-neutral-500' : 'text-gray-400'}`}>({percentage}%)</span>
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className={`mt-2 pt-2 border-t text-[8px] leading-relaxed ${theme === 'dark' ? 'border-neutral-800 text-neutral-500' : 'border-gray-100 text-gray-400'}`}>
+                  * Demandas a partir da etapa <strong>15 - Agendar Deploy</strong> são consideradas concluídas.
+                </div>
+              </div>
+            )}
           </div>
 
           <div className={`h-4 w-px ${theme === 'dark' ? 'bg-neutral-800' : 'bg-gray-300'}`}></div>

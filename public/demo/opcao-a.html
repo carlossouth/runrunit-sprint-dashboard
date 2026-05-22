@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opção A - PWA Responsivo - South Sprint Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              900: '#0F3A5F',
+              800: '#144B7A',
+              700: '#1A5A90',
+            },
+            accent: {
+              500: '#00ACE7',
+              400: '#33BCEB',
+            },
+            surface: {
+              900: '#1E1E24',
+              800: '#2A2A32',
+              700: '#363640',
+              600: '#4D4D5C',
+              100: '#E8E8ED',
+              50: '#F4F4F6',
+            },
+            status: {
+              done: '#22C55E',
+              wait: '#FDE047',
+              api: '#F97316',
+              over: '#EF4444',
+            }
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col">
+
+  <!-- PWA Install Banner Simulator -->
+  <div id="pwa-banner" class="bg-brand-900 text-white px-4 py-3 flex items-center justify-between text-xs border-b border-white/10 transition-all duration-300">
+    <div class="flex items-center space-x-2">
+      <div class="w-8 h-8 rounded-lg bg-accent-500 flex items-center justify-center font-bold text-sm shadow">S</div>
+      <div>
+        <p class="font-bold">South Sprint Dashboard</p>
+        <p class="text-white/60 text-[10px]">Adicione à sua tela de início</p>
+      </div>
+    </div>
+    <div class="flex items-center space-x-2">
+      <button onclick="dismissPwa()" class="text-white/60 hover:text-white px-2 py-1">Agora não</button>
+      <button onclick="installPwa()" class="bg-accent-500 hover:bg-accent-400 text-white font-bold px-3 py-1.5 rounded shadow transition-all">Instalar</button>
+    </div>
+  </div>
+
+  <!-- App Header -->
+  <header class="bg-brand-900 text-white px-4 py-3 sticky top-0 z-30 shadow-md flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="w-6 h-6 rounded bg-white/10 flex items-center justify-center text-xs font-bold">S</div>
+      <h1 class="font-extrabold text-xs uppercase tracking-wider">Sprint Dashboard <span class="text-accent-400 font-normal">PWA</span></h1>
+    </div>
+    <div class="flex items-center space-x-2">
+      <span class="text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded font-bold uppercase tracking-wider">Online</span>
+    </div>
+  </header>
+
+  <!-- KPI Quick Ribbon -->
+  <div class="bg-white border-b border-gray-200 px-4 py-3 flex space-x-4 overflow-x-auto scrollbar-hide text-xs sticky top-[48px] z-20 shadow-sm">
+    <div class="flex-shrink-0 bg-gray-50 p-2.5 rounded-lg border border-gray-100 flex flex-col justify-between min-w-[100px]">
+      <span class="text-[10px] font-bold text-gray-400 uppercase">Progresso</span>
+      <span class="font-bold text-status-done text-sm">74% Concluído</span>
+    </div>
+    <div class="flex-shrink-0 bg-gray-50 p-2.5 rounded-lg border border-gray-100 flex flex-col justify-between min-w-[100px]">
+      <span class="text-[10px] font-bold text-gray-400 uppercase">Demandas</span>
+      <span class="font-bold text-brand-900 text-sm">18 Ativas</span>
+    </div>
+    <div class="flex-shrink-0 bg-gray-50 p-2.5 rounded-lg border border-gray-100 flex flex-col justify-between min-w-[100px]">
+      <span class="text-[10px] font-bold text-gray-400 uppercase">Estouros</span>
+      <span class="font-bold text-status-over text-sm">3 Alertas</span>
+    </div>
+    <div class="flex-shrink-0 bg-gray-50 p-2.5 rounded-lg border border-gray-100 flex flex-col justify-between min-w-[100px]">
+      <span class="text-[10px] font-bold text-gray-400 uppercase">Total Horas</span>
+      <span class="font-bold text-gray-700 text-sm">142h / 190h</span>
+    </div>
+  </div>
+
+  <!-- Main Mobile Container -->
+  <main class="flex-grow p-4 space-y-4 max-w-md mx-auto w-full">
+    
+    <div class="flex items-center justify-between">
+      <h2 class="text-sm font-bold uppercase tracking-wider text-gray-500">Lista de Demandas (Responsivo)</h2>
+      <div class="text-[10px] text-gray-400">Total: 3 itens demonstrativos</div>
+    </div>
+
+    <!-- Demand Card 1 (In Progress / Overlimit Alert) -->
+    <div class="bg-white rounded-xl border border-rose-100 shadow-sm p-4 space-y-3 transition-all active:scale-[0.99] border-l-4 border-l-rose-500">
+      <div class="flex items-start justify-between">
+        <div>
+          <span class="text-[10px] font-bold text-rose-500 uppercase tracking-widest bg-rose-50 px-2 py-0.5 rounded">⚠️ ESTOURO CRÍTICO</span>
+          <h3 class="font-bold text-sm text-brand-900 mt-1 leading-snug">#98715 - Integração com API de Pagamentos</h3>
+        </div>
+        <a href="#" class="text-xs font-semibold text-accent-500 hover:text-accent-400 whitespace-nowrap pl-2">Ver RRI ↗</a>
+      </div>
+
+      <div class="flex items-center space-x-2 text-[10px] text-gray-500">
+        <span class="bg-gray-100 px-2 py-0.5 rounded font-bold uppercase">Etapa: 08 - Code Review</span>
+        <span class="text-xs font-bold text-amber-500">● Em Execução</span>
+      </div>
+
+      <!-- Compact Disciplines Progress Stack -->
+      <div class="space-y-2.5 border-t border-gray-100 pt-3">
+        <!-- Back-end (Over Limit) -->
+        <div class="space-y-1">
+          <div class="flex justify-between text-[10px] font-bold">
+            <span class="text-rose-500">Back-end [Estouro]</span>
+            <span class="text-gray-600">22:30h <span class="text-gray-400">/ 16:00h</span></span>
+          </div>
+          <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
+            <div class="bg-rose-500 h-full rounded-full" style="width: 100%"></div>
+          </div>
+        </div>
+        <!-- Front-end -->
+        <div class="space-y-1">
+          <div class="flex justify-between text-[10px] font-bold">
+            <span class="text-brand-800">Front-end [Em Andamento]</span>
+            <span class="text-gray-600">08:00h <span class="text-gray-400">/ 12:00h</span></span>
+          </div>
+          <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
+            <div class="bg-accent-500 h-full rounded-full" style="width: 66%"></div>
+          </div>
+        </div>
+        <!-- QA -->
+        <div class="space-y-1">
+          <div class="flex justify-between text-[10px] font-bold">
+            <span class="text-gray-400">QA & Teste [Aguardando]</span>
+            <span class="text-gray-400">00:00h / 04:00h</span>
+          </div>
+          <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
+            <div class="bg-gray-300 h-full rounded-full" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demand Card 2 (In Progress - Normal) -->
+    <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4 space-y-3 transition-all active:scale-[0.99] border-l-4 border-l-emerald-500">
+      <div class="flex items-start justify-between">
+        <div>
+          <span class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest bg-emerald-50 px-2 py-0.5 rounded">● EM EXECUÇÃO</span>
+          <h3 class="font-bold text-sm text-brand-900 mt-1 leading-snug">#98654 - Painel Administrativo de Usuários</h3>
+        </div>
+        <a href="#" class="text-xs font-semibold text-accent-500 hover:text-accent-400 whitespace-nowrap pl-2">Ver RRI ↗</a>
+      </div>
+
+      <div class="flex items-center space-x-2 text-[10px] text-gray-500">
+        <span class="bg-gray-100 px-2 py-0.5 rounded font-bold uppercase">Etapa: 05 - Desenvolvimento</span>
+      </div>
+
+      <!-- Compact Disciplines Progress Stack -->
+      <div class="space-y-2.5 border-t border-gray-100 pt-3">
+        <!-- Front-end -->
+        <div class="space-y-1">
+          <div class="flex justify-between text-[10px] font-bold">
+            <span class="text-emerald-600">Front-end [Em Andamento]</span>
+            <span class="text-gray-600">14:15h <span class="text-gray-400">/ 20:00h</span></span>
+          </div>
+          <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
+            <div class="bg-status-done h-full rounded-full" style="width: 71%"></div>
+          </div>
+        </div>
+        <!-- QA -->
+        <div class="space-y-1">
+          <div class="flex justify-between text-[10px] font-bold">
+            <span class="text-gray-400">QA & Teste [Aguardando]</span>
+            <span class="text-gray-400">00:00h / 06:00h</span>
+          </div>
+          <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
+            <div class="bg-gray-300 h-full rounded-full" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demand Card 3 (Completed) -->
+    <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-4 space-y-3 transition-all active:scale-[0.99] border-l-4 border-l-gray-300 opacity-80">
+      <div class="flex items-start justify-between">
+        <div>
+          <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest bg-gray-100 px-2 py-0.5 rounded">✓ FINALIZADO</span>
+          <h3 class="font-bold text-sm text-brand-900 mt-1 leading-snug">#98501 - Correção no Layout de Relatórios</h3>
+        </div>
+        <a href="#" class="text-xs font-semibold text-accent-500 hover:text-accent-400 whitespace-nowrap pl-2">Ver RRI ↗</a>
+      </div>
+
+      <div class="flex items-center space-x-2 text-[10px] text-gray-500">
+        <span class="bg-gray-100 px-2 py-0.5 rounded font-bold uppercase">Etapa: 15 - Agendar Deploy</span>
+      </div>
+
+      <!-- Compact Disciplines Progress Stack -->
+      <div class="space-y-2.5 border-t border-gray-100 pt-3">
+        <!-- Back-end -->
+        <div class="space-y-1">
+          <div class="flex justify-between text-[10px] font-bold">
+            <span class="text-status-done">Back-end [Finalizado]</span>
+            <span class="text-gray-600">04:00h <span class="text-gray-400">/ 04:00h</span></span>
+          </div>
+          <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
+            <div class="bg-status-done h-full rounded-full" style="width: 100%"></div>
+          </div>
+        </div>
+        <!-- QA -->
+        <div class="space-y-1">
+          <div class="flex justify-between text-[10px] font-bold">
+            <span class="text-status-done">QA & Teste [Finalizado]</span>
+            <span class="text-gray-600">02:00h <span class="text-gray-400">/ 02:00h</span></span>
+          </div>
+          <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
+            <div class="bg-status-done h-full rounded-full" style="width: 100%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer Navigation Simulation -->
+  <footer class="bg-white border-t border-gray-200 py-2 px-6 flex items-center justify-around text-[10px] font-bold uppercase text-gray-500 flex-none sticky bottom-0">
+    <button class="flex flex-col items-center space-y-1 text-brand-900">
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+      <span>Dashboard</span>
+    </button>
+    <button class="flex flex-col items-center space-y-1 hover:text-brand-900 transition-colors">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+      <span>Estouros</span>
+    </button>
+    <button class="flex flex-col items-center space-y-1 hover:text-brand-900 transition-colors">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+      <span>Ajustes</span>
+    </button>
+  </footer>
+
+  <script>
+    function dismissPwa() {
+      const banner = document.getElementById('pwa-banner');
+      banner.style.opacity = '0';
+      setTimeout(() => banner.style.display = 'none', 300);
+    }
+
+    function installPwa() {
+      alert("Simulando Instalação do PWA na Tela Inicial! Em um celular real, o navegador exibiria o prompt nativo de instalação.");
+      dismissPwa();
+    }
+  </script>
+</body>
+</html>
