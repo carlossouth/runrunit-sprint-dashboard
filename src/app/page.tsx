@@ -261,11 +261,11 @@ export default function Dashboard() {
                 type="text" 
                 data-testid="search-sprint-input" 
                 aria-label="Pesquisar ID da Sprint" 
-                placeholder="Pesquisar Sprint ID..." 
+                placeholder="PESQUISAR SPRINT ID..." 
                 value={sprintId}
                 onChange={(e) => setSprintId(e.target.value)}
                 onFocus={() => setShowHistory(true)}
-                className="bg-transparent border-none outline-none text-xs font-bold text-white placeholder-white/50 py-1.5 pr-2 w-32 focus:w-48 transition-all duration-300"
+                className="bg-transparent border-none outline-none text-xs font-bold text-white placeholder-white/50 py-1.5 pr-2 w-32 focus:w-48 transition-all duration-300 uppercase"
               />
               
               {/* Dropdown de Historico */}
@@ -311,7 +311,7 @@ export default function Dashboard() {
             <button 
               type="submit" 
               disabled={loading}
-              className={`bg-accent-500 hover:bg-accent-400 text-white text-xs font-bold py-1.5 px-3 rounded transition-colors flex items-center ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+              className={`bg-accent-500 hover:bg-accent-400 text-white text-xs font-bold py-1.5 px-3 rounded transition-colors flex items-center uppercase ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
             >
               {loading && (
                 <svg className="animate-spin -ml-1 mr-2 h-3 w-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -350,7 +350,7 @@ export default function Dashboard() {
                   {Object.entries(breakdown).map(([key, value]) => {
                     const diff = value.exec - value.prev;
                     const diffColor = diff > 0 && value.prev > 0 ? 'text-rose-500 font-bold' : (diff < 0 ? 'text-emerald-500' : '');
-                    const label = key === 'back' ? 'Back-end' : key === 'front' ? 'Front-end' : key === 'mobile' ? 'Mobile' : 'QA/Teste';
+                    const label = key === 'back' ? 'BACK-END' : key === 'front' ? 'FRONT-END' : key === 'mobile' ? 'MOBILE' : 'QA/TESTE';
                     return (
                       <tr key={key} className={`${theme === 'dark' ? 'hover:bg-neutral-800/40' : 'hover:bg-gray-50'}`}>
                         <td className={`py-1.5 ${theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}`}>{label}</td>
@@ -376,13 +376,13 @@ export default function Dashboard() {
             </div>
             {data.length > 0 && (
               <div className={`absolute top-full left-0 mt-2 w-64 shadow-lg border rounded-md p-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 ${theme === 'dark' ? 'bg-[#1a1a1f] border-neutral-800 text-neutral-300' : 'bg-white border-gray-200 text-gray-600'}`}>
-                <h3 className={`text-xs font-bold mb-2 border-b pb-1 ${theme === 'dark' ? 'text-white border-neutral-800' : 'text-brand-900 border-gray-100'}`}>Tipos de Demandas</h3>
+                <h3 className={`text-xs font-bold mb-2 border-b pb-1 uppercase ${theme === 'dark' ? 'text-white border-neutral-800' : 'text-brand-900 border-gray-100'}`}>Tipos de Demandas</h3>
                 <div className="space-y-1.5 text-[10px] font-mono mb-2">
                   {sortedTypes.map(([type, count]) => {
                     const percentage = data.length > 0 ? Math.round((count / data.length) * 100) : 0;
                     return (
                       <div key={type} className="flex justify-between items-center">
-                        <span className={`truncate mr-2 ${theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}`} title={type}>{type}:</span>
+                        <span className={`truncate mr-2 uppercase ${theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}`} title={type}>{type}:</span>
                         <span className={`font-bold flex-shrink-0 ${theme === 'dark' ? 'text-white' : 'text-brand-900'}`}>
                           {count} <span className={`text-[8px] font-normal ${theme === 'dark' ? 'text-neutral-500' : 'text-gray-400'}`}>({percentage}%)</span>
                         </span>
@@ -400,7 +400,7 @@ export default function Dashboard() {
           <div className={`h-4 w-px ${theme === 'dark' ? 'bg-neutral-800' : 'bg-gray-300'}`}></div>
           <div className="flex items-center relative group/kpi cursor-help">
             <span className={`${theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'} mr-2 text-xs uppercase font-bold tracking-wider border-b border-dashed ${theme === 'dark' ? 'border-neutral-600' : 'border-gray-400'}`}>Progresso Geral:</span>
-            <span className="font-bold text-status-done" data-testid="kpi-progress">{progressPercent}% Concluído</span>
+            <span className="font-bold text-status-done uppercase text-xs" data-testid="kpi-progress">{progressPercent}% Concluído</span>
             
             <div className={`absolute top-full left-0 mt-2 w-72 shadow-lg border rounded-md p-3 opacity-0 invisible group-hover/kpi:opacity-100 group-hover/kpi:visible transition-all duration-200 z-50 ${theme === 'dark' ? 'bg-[#1a1a1f] border-neutral-800 text-neutral-300' : 'bg-white border-gray-200 text-gray-600'}`}>
               <div className="text-xs font-medium leading-relaxed">
@@ -411,9 +411,9 @@ export default function Dashboard() {
           <div className={`h-4 w-px ${theme === 'dark' ? 'bg-neutral-800' : 'bg-gray-300'}`}></div>
           <div className="flex items-center relative group/kpi cursor-help">
             <span className={`${theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'} mr-2 text-xs uppercase font-bold tracking-wider border-b border-dashed ${theme === 'dark' ? 'border-neutral-600' : 'border-gray-400'}`}>Atenção:</span>
-            <span className={`font-bold flex items-center whitespace-nowrap ${(overLimitCount.back + overLimitCount.front + overLimitCount.mobile + overLimitCount.qa) > 0 ? (theme === 'dark' ? 'text-rose-400' : 'text-rose-600') : (theme === 'dark' ? 'text-neutral-500' : 'text-gray-400')}`} data-testid="kpi-alerts">
-              {(overLimitCount.back + overLimitCount.front + overLimitCount.mobile + overLimitCount.qa) > 0 && <span className="w-2 h-2 rounded-full bg-rose-500 mr-2 animate-pulse flex-shrink-0"></span>}
-              {overLimitCount.back} Back, {overLimitCount.front} Front, {overLimitCount.mobile} APP, {overLimitCount.qa} QA Demandas em Estouro
+            <span className={`font-bold flex items-center whitespace-nowrap uppercase ${(overLimitCount.back + overLimitCount.front + overLimitCount.mobile + overLimitCount.qa) > 0 ? (theme === 'dark' ? 'text-rose-400/60' : 'text-rose-500/65') : (theme === 'dark' ? 'text-neutral-500' : 'text-gray-400')}`} data-testid="kpi-alerts">
+              {(overLimitCount.back + overLimitCount.front + overLimitCount.mobile + overLimitCount.qa) > 0 && <span className="w-2 h-2 rounded-full bg-rose-400/35 mr-2 animate-pulse flex-shrink-0"></span>}
+              {overLimitCount.back} Back, {overLimitCount.front} Front, {overLimitCount.mobile} APP, {overLimitCount.qa} QA Ultrapassou estimativa
             </span>
             
             <div className={`absolute top-full left-0 mt-2 w-80 shadow-lg border rounded-md p-3 opacity-0 invisible group-hover/kpi:opacity-100 group-hover/kpi:visible transition-all duration-200 z-50 ${theme === 'dark' ? 'bg-[#1a1a1f] border-neutral-800 text-neutral-300' : 'bg-white border-gray-200 text-gray-600'}`}>
@@ -484,7 +484,7 @@ export default function Dashboard() {
                         </span>
                       )}
                     </div>
-                    <a href={`https://runrun.it/pt-BR/tasks/${task.id}`} target="_blank" rel="noreferrer" className={`block text-xs font-bold leading-snug transition-colors mt-0.5 truncate ${theme === 'dark' ? 'text-neutral-200 hover:text-accent-400' : 'text-brand-900 hover:text-accent-500'}`} title={task.title}>
+                    <a href={`https://runrun.it/pt-BR/tasks/${task.id}`} target="_blank" rel="noreferrer" className={`block text-xs font-bold leading-snug transition-colors mt-0.5 truncate uppercase ${theme === 'dark' ? 'text-neutral-200 hover:text-accent-400' : 'text-brand-900 hover:text-accent-500'}`} title={task.title}>
                       {task.title}
                     </a>
                   </div>
@@ -496,25 +496,25 @@ export default function Dashboard() {
                   </div>
                   
                   <ProgressBar
-                    title="Back-end"
+                    title="BACK-END"
                     estimate={parseEstimate(task.estimates.back)}
                     assignees={backAssigs}
                     theme={theme}
                   />
                   <ProgressBar
-                    title="Front-end"
+                    title="FRONT-END"
                     estimate={parseEstimate(task.estimates.front)}
                     assignees={frontAssigs}
                     theme={theme}
                   />
                   <ProgressBar
-                    title="Mobile"
+                    title="MOBILE"
                     estimate={parseEstimate(task.estimates.mobile)}
                     assignees={mobileAssigs}
                     theme={theme}
                   />
                   <ProgressBar
-                    title="QA / Teste"
+                    title="QA / TESTE"
                     estimate={parseEstimate(task.estimates.qa)}
                     assignees={qaAssigs}
                     theme={theme}
@@ -551,10 +551,10 @@ function ProgressBar({ title, estimate, assignees, theme }: { title: string, est
   let statusColor = '';
 
   if (isOver) {
-    barColor = 'bg-rose-500';
-    textColor = theme === 'dark' ? 'text-rose-400' : 'text-rose-600';
+    barColor = 'bg-rose-400/55';
+    textColor = theme === 'dark' ? 'text-rose-400/75' : 'text-rose-500/80';
     statusText = '⚠️ ULTRAPASSOU ESTIMATIVA';
-    statusColor = theme === 'dark' ? 'text-rose-400' : 'text-rose-600';
+    statusColor = theme === 'dark' ? 'text-rose-400/75' : 'text-rose-500/80';
   } else if (noEstimateButExec) {
     barColor = 'bg-accent-500';
     textColor = 'text-accent-500';
@@ -609,7 +609,7 @@ function ProgressBar({ title, estimate, assignees, theme }: { title: string, est
                 </div>
                 <div className="flex-1 overflow-hidden">
                   <div className="flex items-center space-x-1.5">
-                    <div className={`text-xs font-bold leading-tight truncate ${assignee.is_working_on ? 'text-status-done' : (theme === 'dark' ? 'text-white' : 'text-brand-900')}`}>{assignee.assignee_name}</div>
+                    <div className={`text-xs font-bold leading-tight truncate uppercase ${assignee.is_working_on ? 'text-status-done' : (theme === 'dark' ? 'text-white' : 'text-brand-900')}`}>{assignee.assignee_name}</div>
                     {assignee.is_working_on && (
                       <span className="text-[7px] font-extrabold uppercase px-1 py-0.5 rounded bg-emerald-500/10 text-status-done animate-pulse border border-emerald-500/20">
                         PLAY
@@ -625,8 +625,8 @@ function ProgressBar({ title, estimate, assignees, theme }: { title: string, est
             ))}
           </div>
 
-          <div className={`rounded p-1.5 text-[10px] font-mono flex justify-between ${theme === 'dark' ? 'bg-[#151518] border-t border-neutral-800 text-neutral-400' : 'bg-gray-50 border-t border-gray-100 text-gray-500'}`}>
-            <span>Exec / Prev:</span>
+          <div className={`rounded p-1.5 text-[10px] font-mono flex justify-between uppercase ${theme === 'dark' ? 'bg-[#151518] border-t border-neutral-800 text-neutral-400' : 'bg-gray-50 border-t border-gray-100 text-gray-500'}`}>
+            <span>EXEC / PREV:</span>
             <span className={`font-bold ${isOver ? 'text-status-wait-api' : 'text-status-done'}`}>
               {formatTime(execSeconds)} / {formatTime(estimate)}
             </span>

@@ -267,10 +267,10 @@ export default function MobileDashboard() {
           <form onSubmit={handleSearchSubmit} className="flex space-x-2">
             <input 
               type="text" 
-              placeholder="Pesquisar Sprint ID..." 
+              placeholder="PESQUISAR SPRINT ID..." 
               value={sprintId}
               onChange={(e) => setSprintId(e.target.value)}
-              className={`flex-grow text-xs font-bold px-3.5 py-2.5 rounded-xl border outline-none transition-all ${
+              className={`flex-grow text-xs font-bold px-3.5 py-2.5 rounded-xl border outline-none transition-all uppercase ${
                 theme === 'dark' 
                   ? 'bg-[#121214] border-neutral-800 text-white focus:border-accent-500' 
                   : 'bg-white border-slate-200 text-slate-800 focus:border-accent-500'
@@ -279,7 +279,7 @@ export default function MobileDashboard() {
             <button 
               type="submit" 
               disabled={loading}
-              className={`bg-accent-500 hover:bg-accent-400 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center shadow-md active:scale-95 ${loading ? 'opacity-70' : ''}`}
+              className={`bg-accent-500 hover:bg-accent-400 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all flex items-center shadow-md active:scale-95 uppercase ${loading ? 'opacity-70' : ''}`}
             >
               {loading ? '...' : 'Buscar'}
             </button>
@@ -317,9 +317,9 @@ export default function MobileDashboard() {
               </div>
               <div className="p-3 border rounded-2xl flex flex-col justify-between transition-all bg-white dark:bg-[#121214] border-gray-100 dark:border-neutral-900/60 shadow-sm shadow-slate-100/50 dark:shadow-none">
                 <span className="text-[9.5px] font-semibold text-slate-400 dark:text-neutral-500 uppercase tracking-wider">Atenção</span>
-                <span className={`font-bold text-[13px] tracking-tight mt-1.5 flex items-center ${totalAlerts > 0 ? 'text-rose-500 dark:text-rose-400' : 'text-slate-400'}`}>
-                  {totalAlerts > 0 && <span className="w-1.5 h-1.5 rounded-full bg-rose-500 mr-1.5 animate-pulse"></span>}
-                  {totalAlerts} {totalAlerts === 1 ? 'Ultrapassou Estimativa' : 'Ultrapassaram Estimativa'}
+                <span className={`font-bold text-[13px] tracking-tight mt-1.5 flex items-center uppercase ${totalAlerts > 0 ? 'text-rose-500/65 dark:text-rose-400/60' : 'text-slate-400'}`}>
+                  {totalAlerts > 0 && <span className="w-1.5 h-1.5 rounded-full bg-rose-400/35 mr-1.5 animate-pulse"></span>}
+                  {totalAlerts} {totalAlerts === 1 ? 'ULTRAPASSOU ESTIMATIVA' : 'ULTRAPASSARAM ESTIMATIVA'}
                 </span>
               </div>
             </div>
@@ -375,7 +375,7 @@ export default function MobileDashboard() {
                           )}
                         </div>
                         
-                        <h3 className="font-semibold text-[13px] leading-snug mt-1.5 text-slate-800 dark:text-neutral-100 tracking-tight truncate" title={task.title}>
+                        <h3 className="font-semibold text-[13px] leading-snug mt-1.5 text-slate-800 dark:text-neutral-100 tracking-tight truncate uppercase" title={task.title}>
                           {task.title}
                         </h3>
                       </div>
@@ -391,7 +391,7 @@ export default function MobileDashboard() {
                       {/* Renderiza apenas se houver previsão ou execução na área para manter o card limpo */}
                       {(backE > 0 || backExec > 0) && (
                         <DisciplineProgressBar 
-                          title="Back-end" 
+                          title="BACK-END" 
                           exec={backExec} 
                           prev={backE} 
                           theme={theme}
@@ -400,7 +400,7 @@ export default function MobileDashboard() {
                       )}
                       {(frontE > 0 || frontExec > 0) && (
                         <DisciplineProgressBar 
-                          title="Front-end" 
+                          title="FRONT-END" 
                           exec={frontExec} 
                           prev={frontE} 
                           theme={theme}
@@ -409,7 +409,7 @@ export default function MobileDashboard() {
                       )}
                       {(mobileE > 0 || mobileExec > 0) && (
                         <DisciplineProgressBar 
-                          title="Mobile" 
+                          title="MOBILE" 
                           exec={mobileExec} 
                           prev={mobileE} 
                           theme={theme}
@@ -418,7 +418,7 @@ export default function MobileDashboard() {
                       )}
                       {(qaE > 0 || qaExec > 0) && (
                         <DisciplineProgressBar 
-                          title="QA / Teste" 
+                          title="QA / TESTE" 
                           exec={qaExec} 
                           prev={qaE} 
                           theme={theme}
@@ -464,7 +464,7 @@ export default function MobileDashboard() {
                               </div>
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center space-x-1.5">
-                                  <span className={`text-[12px] font-semibold truncate ${assignee.is_working_on ? 'text-emerald-500' : 'text-slate-700 dark:text-neutral-300'}`}>
+                                  <span className={`text-[12px] font-semibold truncate uppercase ${assignee.is_working_on ? 'text-emerald-500' : 'text-slate-700 dark:text-neutral-300'}`}>
                                     {assignee.assignee_name}
                                   </span>
                                   {assignee.is_working_on && (
@@ -495,7 +495,7 @@ export default function MobileDashboard() {
                           href={`https://runrun.it/pt-BR/tasks/${task.id}`} 
                           target="_blank" 
                           rel="noreferrer" 
-                          className="flex items-center justify-center w-full py-2 bg-slate-100 hover:bg-slate-200 dark:bg-neutral-900/60 dark:hover:bg-neutral-800 text-[11px] font-semibold text-accent-500 rounded-xl transition-all"
+                          className="flex items-center justify-center w-full py-2 bg-slate-100 hover:bg-slate-200 dark:bg-neutral-900/60 dark:hover:bg-neutral-800 text-[11px] font-semibold text-accent-500 rounded-xl transition-all uppercase"
                         >
                           Ver no Runrun.it ↗
                         </a>
@@ -549,8 +549,8 @@ function DisciplineProgressBar({ title, exec, prev, theme, stageCompleted }: Dis
     barGradient = 'from-emerald-500 to-emerald-400';
   } else if (isOver) {
     labelText = '[ULTRAPASSOU ESTIMATIVA]';
-    colorClasses = 'text-rose-500 dark:text-rose-400';
-    barGradient = 'from-rose-500 to-red-600';
+    colorClasses = 'text-rose-500/80 dark:text-rose-400/75';
+    barGradient = 'from-rose-400/60 to-rose-400/40';
   } else if (noEstimateButExec) {
     labelText = '[VERIFICAR ESTIMATIVA]';
     colorClasses = 'text-amber-500 dark:text-amber-400';
@@ -564,11 +564,11 @@ function DisciplineProgressBar({ title, exec, prev, theme, stageCompleted }: Dis
     colorClasses = 'text-orange-500 dark:text-orange-400';
     barGradient = 'from-orange-500 to-amber-500';
   } else if (progress === 0) {
-    labelText = '[Aguardando]';
+    labelText = '[AGUARDANDO]';
     colorClasses = 'text-slate-400 dark:text-neutral-500';
     barGradient = 'from-slate-300 to-slate-200 dark:from-neutral-700 dark:to-neutral-800';
   } else {
-    labelText = '[Em Andamento]';
+    labelText = '[EM ANDAMENTO]';
     colorClasses = 'text-accent-500 dark:text-accent-400';
   }
 
@@ -576,7 +576,7 @@ function DisciplineProgressBar({ title, exec, prev, theme, stageCompleted }: Dis
     <div className="space-y-1 text-[9.5px]">
       <div className="flex justify-between font-semibold">
         <span className={`${colorClasses} uppercase tracking-wider`}>
-          {title} <span className="text-[8.5px] font-normal lowercase">{labelText}</span>
+          {title} <span className="text-[8.5px] font-normal uppercase">{labelText}</span>
         </span>
         <span className={`font-mono text-[11px] ${isOver && !stageCompleted ? 'text-rose-500 font-semibold' : 'text-slate-600 dark:text-neutral-300 font-medium'}`}>
           {formatTime(exec)} <span className="text-slate-400 font-normal">/ {formatTime(prev)}</span>
