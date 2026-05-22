@@ -319,7 +319,7 @@ export default function MobileDashboard() {
                 <span className="text-[9.5px] font-semibold text-slate-400 dark:text-neutral-500 uppercase tracking-wider">Atenção</span>
                 <span className={`font-bold text-[13px] tracking-tight mt-1.5 flex items-center ${totalAlerts > 0 ? 'text-rose-500 dark:text-rose-400' : 'text-slate-400'}`}>
                   {totalAlerts > 0 && <span className="w-1.5 h-1.5 rounded-full bg-rose-500 mr-1.5 animate-pulse"></span>}
-                  {totalAlerts} {totalAlerts === 1 ? 'Estouro Crítico' : 'Estouros Críticos'}
+                  {totalAlerts} {totalAlerts === 1 ? 'Ultrapassou Estimativa' : 'Ultrapassaram Estimativa'}
                 </span>
               </div>
             </div>
@@ -548,7 +548,7 @@ function DisciplineProgressBar({ title, exec, prev, theme, stageCompleted }: Dis
     colorClasses = 'text-status-done';
     barGradient = 'from-emerald-500 to-emerald-400';
   } else if (isOver) {
-    labelText = '[ESTOURO CRÍTICO]';
+    labelText = '[ULTRAPASSOU ESTIMATIVA]';
     colorClasses = 'text-rose-500 dark:text-rose-400';
     barGradient = 'from-rose-500 to-red-600';
   } else if (noEstimateButExec) {

@@ -24,10 +24,13 @@ export function parseEstimate(val: string | number | null): number {
 // Format seconds into HH:MM:SS
 export function formatTime(totalSeconds: number): string {
   if (!totalSeconds || isNaN(totalSeconds)) return "00:00:00";
-  const h = Math.floor(totalSeconds / 3600);
-  const m = Math.floor((totalSeconds % 3600) / 60);
-  const s = Math.floor(totalSeconds % 60);
-  return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  const isNegative = totalSeconds < 0;
+  const absSeconds = Math.abs(totalSeconds);
+  const h = Math.floor(absSeconds / 3600);
+  const m = Math.floor((absSeconds % 3600) / 60);
+  const s = Math.floor(absSeconds % 60);
+  const sign = isNegative ? "-" : "";
+  return `${sign}${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
 }
 
 // Filter assignments by role keywords
@@ -329,29 +332,36 @@ export default function Dashboard() {
             <div className="flex items-center">
               <span className={`mr-2 text-xs uppercase font-bold tracking-wider ${theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}`}>Horas Totais:</span>
               <span className={`font-bold ${theme === 'dark' ? 'text-white' : 'text-brand-900'}`} data-testid="kpi-total-hours">
-                <span className={`text-[10px] mr-1 uppercase ${theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}`}>Exec:</span> {formatTime(totalExec)} <span className="text-gray-400 font-normal mx-1">/</span> <span className="text-[10px] text-gray-400 mr-1 uppercase">Prev:</span> <span className={`font-normal ${theme === 'dark' ? 'text-neutral-300' : 'text-gray-500'}`}>{formatTime(totalPrev)}</span>
+                <span className={`text-[10px] mr-1 uppercase ${theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}`}>Exec:</span> {formatTime(totalExec)} <span className="text-gray-400 font-normal mx-1">/</span> <span className="text-[10px] text-gray-400 mr-1 uppercase">Prev:</span> <span className={`font-normal ${theme === 'dark' ? 'text-neutral-300' : 'text-gray-500'}`}>{formatTime(totalPrev)}</span> <span className="text-gray-400 font-normal mx-1">/</span> <span className="text-[10px] text-gray-400 mr-1 uppercase">Dif:</span> <span className={totalExec - totalPrev > 0 ? 'text-rose-500' : (totalExec - totalPrev < 0 ? 'text-emerald-500' : '')}>{totalExec - totalPrev > 0 ? `+${formatTime(totalExec - totalPrev)}` : formatTime(totalExec - totalPrev)}</span>
               </span>
             </div>
-            <div className={`absolute top-full left-0 mt-2 w-56 shadow-lg border rounded-md p-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 ${theme === 'dark' ? 'bg-[#1a1a1f] border-neutral-800 text-neutral-300' : 'bg-white border-gray-200 text-gray-600'}`}>
+            <div className={`absolute top-full left-0 mt-2 w-80 shadow-lg border rounded-md p-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 ${theme === 'dark' ? 'bg-[#1a1a1f] border-neutral-800 text-neutral-300' : 'bg-white border-gray-200 text-gray-600'}`}>
               <h3 className={`text-xs font-bold mb-2 border-b pb-1 ${theme === 'dark' ? 'text-white border-neutral-800' : 'text-brand-900 border-gray-100'}`}>Distribuição de Horas</h3>
-              <div className="space-y-1 text-[10px] font-mono">
-                <div className="flex justify-between">
-                  <span className={theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}>Back-end:</span>
-                  <span className={`font-bold ${theme === 'dark' ? 'text-white' : 'text-brand-900'}`}>{formatTime(breakdown.back.exec)} / {formatTime(breakdown.back.prev)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className={theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}>Front-end:</span>
-                  <span className={`font-bold ${theme === 'dark' ? 'text-white' : 'text-brand-900'}`}>{formatTime(breakdown.front.exec)} / {formatTime(breakdown.front.prev)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className={theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}>Mobile:</span>
-                  <span className={`font-bold ${theme === 'dark' ? 'text-white' : 'text-brand-900'}`}>{formatTime(breakdown.mobile.exec)} / {formatTime(breakdown.mobile.prev)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className={theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}>QA / Teste:</span>
-                  <span className={`font-bold ${theme === 'dark' ? 'text-white' : 'text-brand-900'}`}>{formatTime(breakdown.qa.exec)} / {formatTime(breakdown.qa.prev)}</span>
-                </div>
-              </div>
+              <table className="w-full text-[10px] font-mono text-left border-collapse">
+                <thead>
+                  <tr className={`border-b text-[8px] uppercase tracking-wider ${theme === 'dark' ? 'border-neutral-800 text-neutral-500' : 'border-gray-100 text-gray-400'}`}>
+                    <th className="pb-1.5 font-bold">Área</th>
+                    <th className="pb-1.5 font-bold text-right">Exec</th>
+                    <th className="pb-1.5 font-bold text-right">Prev</th>
+                    <th className="pb-1.5 font-bold text-right">Dif</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-transparent">
+                  {Object.entries(breakdown).map(([key, value]) => {
+                    const diff = value.exec - value.prev;
+                    const diffColor = diff > 0 && value.prev > 0 ? 'text-rose-500 font-bold' : (diff < 0 ? 'text-emerald-500' : '');
+                    const label = key === 'back' ? 'Back-end' : key === 'front' ? 'Front-end' : key === 'mobile' ? 'Mobile' : 'QA/Teste';
+                    return (
+                      <tr key={key} className={`${theme === 'dark' ? 'hover:bg-neutral-800/40' : 'hover:bg-gray-50'}`}>
+                        <td className={`py-1.5 ${theme === 'dark' ? 'text-neutral-400' : 'text-gray-500'}`}>{label}</td>
+                        <td className="py-1.5 text-right font-bold">{formatTime(value.exec)}</td>
+                        <td className="py-1.5 text-right text-gray-400">{formatTime(value.prev)}</td>
+                        <td className={`py-1.5 text-right ${diffColor}`}>{diff > 0 ? `+${formatTime(diff)}` : formatTime(diff)}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           </div>
 
@@ -543,7 +553,7 @@ function ProgressBar({ title, estimate, assignees, theme }: { title: string, est
   if (isOver) {
     barColor = 'bg-rose-500';
     textColor = theme === 'dark' ? 'text-rose-400' : 'text-rose-600';
-    statusText = '⚠️ ESTOURO CRÍTICO';
+    statusText = '⚠️ ULTRAPASSOU ESTIMATIVA';
     statusColor = theme === 'dark' ? 'text-rose-400' : 'text-rose-600';
   } else if (noEstimateButExec) {
     barColor = 'bg-accent-500';
