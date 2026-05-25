@@ -431,102 +431,123 @@ export default function Dashboard() {
       </div>
 
       <main className={`flex-1 overflow-auto relative z-10 transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0c] text-neutral-100' : 'bg-surface-50 text-gray-800'}`} data-testid="main-content">
-        <div className="min-w-[1100px]">
-          <div className={`grid grid-cols-[minmax(200px,2fr)_minmax(150px,1fr)_1fr_1fr_1fr_1fr] sticky top-0 z-20 px-8 py-4 text-[10px] font-bold uppercase tracking-widest shadow-sm transition-colors duration-300 ${theme === 'dark' ? 'bg-[#121214] border-b border-neutral-800/80 text-neutral-500' : 'bg-white border-b border-gray-200 text-gray-400'}`}>
-            <div>Identificador da Demanda</div>
-            <div className="pr-8">Etapa Atual</div>
-            <div className="pr-8">Back-end [INV/PRV]</div>
-            <div className="pr-8">Front-end [INV/PRV]</div>
-            <div className="pr-8">Mobile [INV/PRV]</div>
-            <div className="pr-8">QA & Teste [INV/PRV]</div>
+        {loading ? (
+          <div className="h-full w-full flex flex-col items-center justify-center py-32 px-6 space-y-6">
+            <div className="relative flex items-center justify-center">
+              {/* Glow externo */}
+              <div className="absolute w-16 h-16 rounded-full border-4 border-accent-500/20 animate-pulse"></div>
+              {/* Spinner em gradiente corporativo */}
+              <div className="w-16 h-16 rounded-full border-4 border-t-accent-500 border-r-brand-900/50 border-b-brand-900/20 border-l-accent-500/80 animate-spin"></div>
+              {/* Core animado */}
+              <div className="absolute w-2.5 h-2.5 rounded-full bg-accent-500 animate-ping"></div>
+            </div>
+            <div className="flex flex-col items-center space-y-2 text-center select-none">
+              <h3 className={`text-sm font-extrabold uppercase tracking-widest ${theme === 'dark' ? 'text-white' : 'text-brand-900'}`}>
+                Buscando dados da Sprint
+              </h3>
+              <p className={`text-[10px] uppercase tracking-wider font-bold animate-pulse ${theme === 'dark' ? 'text-neutral-500' : 'text-gray-400'}`}>
+                Por favor, aguarde enquanto conectamos ao Runrun.it...
+              </p>
+            </div>
           </div>
+        ) : (
+          <div className="min-w-[1100px]">
+            <div className={`grid grid-cols-[minmax(200px,2fr)_minmax(150px,1fr)_1fr_1fr_1fr_1fr] sticky top-0 z-20 px-8 py-4 text-[10px] font-bold uppercase tracking-widest shadow-sm transition-colors duration-300 ${theme === 'dark' ? 'bg-[#121214] border-b border-neutral-800/80 text-neutral-500' : 'bg-white border-b border-gray-200 text-gray-400'}`}>
+              <div>Identificador da Demanda</div>
+              <div className="pr-8">Etapa Atual</div>
+              <div className="pr-8">Back-end [INV/PRV]</div>
+              <div className="pr-8">Front-end [INV/PRV]</div>
+              <div className="pr-8">Mobile [INV/PRV]</div>
+              <div className="pr-8">QA & Teste [INV/PRV]</div>
+            </div>
 
-          <div className="text-xs flex flex-col pb-10" data-testid="demand-list">
-            {error && <div className="p-6 text-red-500">{error}</div>}
-            {!loading && data.length === 0 && !error && (
-              <div className={`p-6 ${theme === 'dark' ? 'text-neutral-500' : 'text-gray-400'}`}>Nenhuma demanda encontrada para esta sprint.</div>
-            )}
-            
-            {data.slice().sort((a, b) => (a.status || '').localeCompare(b.status || '')).map(task => {
-              const backAssigs = getRoleAssignments(task.assignments, ['back', 'dev'], ['qa', 'test', 'front', 'mobile']);
-              const frontAssigs = getRoleAssignments(task.assignments, ['front']);
-              const mobileAssigs = getRoleAssignments(task.assignments, ['mobile']);
-              const qaAssigs = getRoleAssignments(task.assignments, ['qa', 'test']);
+            <div className="text-xs flex flex-col pb-10" data-testid="demand-list">
+              {error && <div className="p-6 text-red-500">{error}</div>}
+              {data.length === 0 && !error && (
+                <div className={`p-6 ${theme === 'dark' ? 'text-neutral-500' : 'text-gray-400'}`}>Nenhuma demanda encontrada para esta sprint.</div>
+              )}
+              
+              {data.slice().sort((a, b) => (a.status || '').localeCompare(b.status || '')).map(task => {
+                const backAssigs = getRoleAssignments(task.assignments, ['back', 'dev'], ['qa', 'test', 'front', 'mobile']);
+                const frontAssigs = getRoleAssignments(task.assignments, ['front']);
+                const mobileAssigs = getRoleAssignments(task.assignments, ['mobile']);
+                const qaAssigs = getRoleAssignments(task.assignments, ['qa', 'test']);
 
-              const isWorking = task.is_working_on === true;
+                const isWorking = task.is_working_on === true;
 
-              const bgClass = isWorking
-                ? (theme === 'dark' ? 'bg-emerald-500/5 hover:bg-emerald-500/8' : 'bg-emerald-500/5 hover:bg-emerald-500/10')
-                : (theme === 'dark' ? 'hover:bg-[#18181c]/60' : 'hover:bg-gray-50/50');
+                const bgClass = isWorking
+                  ? (theme === 'dark' ? 'bg-emerald-500/5 hover:bg-emerald-500/8' : 'bg-emerald-500/5 hover:bg-emerald-500/10')
+                  : (theme === 'dark' ? 'hover:bg-[#18181c]/60' : 'hover:bg-gray-50/50');
 
-              const borderBottomClass = isWorking
-                ? (theme === 'dark' ? 'border-b border-emerald-500/20' : 'border-b border-emerald-500/10')
-                : (theme === 'dark' ? 'border-b border-neutral-800/40' : 'border-b border-gray-200');
+                const borderBottomClass = isWorking
+                  ? (theme === 'dark' ? 'border-b border-emerald-500/20' : 'border-b border-emerald-500/10')
+                  : (theme === 'dark' ? 'border-b border-neutral-800/40' : 'border-b border-gray-200');
 
-              const borderLeftClass = isWorking
-                ? 'border-l-4 border-l-status-done'
-                : 'border-l-4 border-l-transparent';
+                const borderLeftClass = isWorking
+                  ? 'border-l-4 border-l-status-done'
+                  : 'border-l-4 border-l-transparent';
 
-              return (
-                <div key={task.id} className={`grid grid-cols-[minmax(200px,2fr)_minmax(150px,1fr)_1fr_1fr_1fr_1fr] pr-8 pl-[28px] py-3 transition-all items-center ${borderLeftClass} ${bgClass} ${borderBottomClass}`}>
-                  
-                  <div className="pr-4 flex-1 min-w-0">
-                    <div className="flex items-center space-x-2">
-                      <a href={`https://runrun.it/pt-BR/tasks/${task.id}`} target="_blank" rel="noreferrer" className={`block text-sm font-bold transition-colors leading-tight ${theme === 'dark' ? 'text-neutral-500 hover:text-white' : 'text-gray-400 hover:text-brand-900'}`}>
-                        #{task.id}
+                return (
+                  <div key={task.id} className={`grid grid-cols-[minmax(200px,2fr)_minmax(150px,1fr)_1fr_1fr_1fr_1fr] pr-8 pl-[28px] py-3 transition-all items-center ${borderLeftClass} ${bgClass} ${borderBottomClass}`}>
+                    
+                    <div className="pr-4 flex-1 min-w-0">
+                      <div className="flex items-center space-x-2">
+                        <a href={`https://runrun.it/pt-BR/tasks/${task.id}`} target="_blank" rel="noreferrer" className={`block text-sm font-bold transition-colors leading-tight ${theme === 'dark' ? 'text-neutral-500 hover:text-white' : 'text-gray-400 hover:text-brand-900'}`}>
+                          #{task.id}
+                        </a>
+                        {isWorking && (
+                          <span className="inline-flex items-center space-x-1.5 px-1.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 select-none">
+                            <span className="relative flex h-1.5 w-1.5">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-done opacity-75"></span>
+                              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-status-done"></span>
+                            </span>
+                            <span className="text-[8px] font-extrabold text-status-done uppercase tracking-widest leading-none">
+                              Em execução
+                            </span>
+                          </span>
+                        )}
+                      </div>
+                      <a href={`https://runrun.it/pt-BR/tasks/${task.id}`} target="_blank" rel="noreferrer" className={`block text-xs font-bold leading-snug transition-colors mt-0.5 truncate uppercase ${theme === 'dark' ? 'text-neutral-200 hover:text-accent-400' : 'text-brand-900 hover:text-accent-500'}`} title={task.title}>
+                        {task.title}
                       </a>
-                      {isWorking && (
-                        <span className="inline-flex items-center space-x-1.5 px-1.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 select-none">
-                          <span className="relative flex h-1.5 w-1.5">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-done opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-status-done"></span>
-                          </span>
-                          <span className="text-[8px] font-extrabold text-status-done uppercase tracking-widest leading-none">
-                            Em execução
-                          </span>
-                        </span>
-                      )}
                     </div>
-                    <a href={`https://runrun.it/pt-BR/tasks/${task.id}`} target="_blank" rel="noreferrer" className={`block text-xs font-bold leading-snug transition-colors mt-0.5 truncate uppercase ${theme === 'dark' ? 'text-neutral-200 hover:text-accent-400' : 'text-brand-900 hover:text-accent-500'}`} title={task.title}>
-                      {task.title}
-                    </a>
-                  </div>
 
-                  <div className="pr-8 truncate flex items-center" title={task.status}>
-                    <span className={`text-[9px] font-bold px-2 py-1 rounded truncate max-w-full uppercase tracking-wider ${theme === 'dark' ? 'text-neutral-400 bg-neutral-800' : 'text-gray-500 bg-gray-100'}`}>
-                      {task.status || 'Sem Etapa'}
-                    </span>
+                    <div className="pr-8 truncate flex items-center" title={task.status}>
+                      <span className={`text-[9px] font-bold px-2 py-1 rounded truncate max-w-full uppercase tracking-wider ${theme === 'dark' ? 'text-neutral-400 bg-neutral-800' : 'text-gray-500 bg-gray-100'}`}>
+                        {task.status || 'Sem Etapa'}
+                      </span>
+                    </div>
+                    
+                    <ProgressBar
+                      title="BACK-END"
+                      estimate={parseEstimate(task.estimates.back)}
+                      assignees={backAssigs}
+                      theme={theme}
+                    />
+                    <ProgressBar
+                      title="FRONT-END"
+                      estimate={parseEstimate(task.estimates.front)}
+                      assignees={frontAssigs}
+                      theme={theme}
+                    />
+                    <ProgressBar
+                      title="MOBILE"
+                      estimate={parseEstimate(task.estimates.mobile)}
+                      assignees={mobileAssigs}
+                      theme={theme}
+                    />
+                    <ProgressBar
+                      title="QA / TESTE"
+                      estimate={parseEstimate(task.estimates.qa)}
+                      assignees={qaAssigs}
+                      theme={theme}
+                    />
                   </div>
-                  
-                  <ProgressBar
-                    title="BACK-END"
-                    estimate={parseEstimate(task.estimates.back)}
-                    assignees={backAssigs}
-                    theme={theme}
-                  />
-                  <ProgressBar
-                    title="FRONT-END"
-                    estimate={parseEstimate(task.estimates.front)}
-                    assignees={frontAssigs}
-                    theme={theme}
-                  />
-                  <ProgressBar
-                    title="MOBILE"
-                    estimate={parseEstimate(task.estimates.mobile)}
-                    assignees={mobileAssigs}
-                    theme={theme}
-                  />
-                  <ProgressBar
-                    title="QA / TESTE"
-                    estimate={parseEstimate(task.estimates.qa)}
-                    assignees={qaAssigs}
-                    theme={theme}
-                  />
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
       </main>
     </div>
   );

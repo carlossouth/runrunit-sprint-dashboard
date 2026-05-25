@@ -293,9 +293,23 @@ export default function MobileDashboard() {
         )}
 
         {loading && (
-          <div className="flex flex-col items-center justify-center py-12 space-y-3">
-            <div className="animate-spin rounded-full h-7 w-7 border-2 border-accent-500 border-t-transparent"></div>
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Carregando Sprint...</span>
+          <div className="flex flex-col items-center justify-center py-20 px-4 space-y-5">
+            <div className="relative flex items-center justify-center">
+              {/* Glow externo */}
+              <div className="absolute w-12 h-12 rounded-full border-4 border-accent-500/20 animate-pulse"></div>
+              {/* Spinner corporativo */}
+              <div className="w-12 h-12 rounded-full border-4 border-t-accent-500 border-r-brand-900/50 border-b-brand-900/20 border-l-accent-500/80 animate-spin"></div>
+              {/* Core animado */}
+              <div className="absolute w-2 h-2 rounded-full bg-accent-500 animate-ping"></div>
+            </div>
+            <div className="flex flex-col items-center space-y-1.5 text-center select-none">
+              <h3 className={`text-[11px] font-extrabold uppercase tracking-widest ${theme === 'dark' ? 'text-white' : 'text-brand-900'}`}>
+                Buscando dados da Sprint
+              </h3>
+              <p className="text-[9px] uppercase tracking-wider font-bold animate-pulse text-slate-400 dark:text-neutral-500">
+                Aguarde o retorno do Runrun.it...
+              </p>
+            </div>
           </div>
         )}
 
