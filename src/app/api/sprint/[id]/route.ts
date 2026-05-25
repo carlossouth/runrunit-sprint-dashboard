@@ -44,7 +44,7 @@ export async function GET(
           'User-Token': USER_TOKEN
         }
       }),
-      fetch('https://runrun.it/api/v1.0/tasks?limit=1000&is_closed=true', {
+      fetch('https://runrun.it/api/v1.0/tasks?limit=1000&is_closed=true&sort=close_date&sort_dir=desc', {
         headers: {
           'App-Key': APP_KEY,
           'User-Token': USER_TOKEN

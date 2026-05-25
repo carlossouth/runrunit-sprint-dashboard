@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Sidebar from '@/components/Sidebar';
 
 // Helper to convert Runrun.it "HH:MM" or seconds to total SECONDS
 export function parseEstimate(val: string | number | null): number {
@@ -223,7 +224,9 @@ export default function Dashboard() {
     <div className={`h-screen flex flex-col antialiased overflow-hidden ${theme === 'dark' ? 'bg-[#0a0a0c] text-neutral-100' : 'bg-surface-50 text-gray-800'}`}>
       <header className="bg-brand-900 text-white flex-none h-14 flex items-center justify-between px-6 border-b border-white/10" data-testid="top-header">
         {/* Lado Esquerdo: Logo + Título */}
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-4">
+          <Sidebar theme={theme} />
+          <div className="h-5 w-px bg-white/20"></div>
           <div className="cursor-pointer hover:opacity-80 active:scale-95 transition-all flex items-center select-none" onClick={toggleTheme} title="Clique para alternar o tema (Claro / Escuro)">
             <Image 
               src="/assets/logomarca-branca-south-tecnologia.png" 
