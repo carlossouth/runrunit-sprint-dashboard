@@ -108,11 +108,11 @@ export default function Sidebar({ theme = 'dark' }: SidebarProps) {
                   className={`group flex items-center px-4 py-3.5 rounded-xl transition-all duration-300 relative overflow-hidden ${
                     isActive
                       ? (isDark 
-                          ? 'bg-accent-500/10 text-accent-400 border-l-4 border-accent-500' 
-                          : 'bg-brand-900/5 text-brand-900 border-l-4 border-brand-900')
+                          ? 'bg-accent-500/10 text-accent-400' 
+                          : 'bg-brand-900/5 text-brand-900')
                       : (isDark 
-                          ? 'hover:bg-neutral-800/50 text-neutral-300 hover:text-white border-l-4 border-transparent' 
-                          : 'hover:bg-gray-50 text-gray-600 hover:text-brand-900 border-l-4 border-transparent')
+                          ? 'hover:bg-neutral-800/50 text-neutral-300 hover:text-white' 
+                          : 'hover:bg-gray-50 text-gray-600 hover:text-brand-900')
                   }`}
                 >
                   {/* Ícone com Efeito */}
