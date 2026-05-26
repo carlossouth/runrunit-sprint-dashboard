@@ -554,7 +554,9 @@ export default function Dashboard() {
 }
 
 function ProgressBar({ title, estimate, assignees, theme }: { title: string, estimate: number, assignees: any[], theme: 'light' | 'dark' }) {
-  if (estimate === 0 && assignees.length === 0) {
+  const execSeconds = assignees.reduce((sum, a) => sum + (a.time_worked_seconds || 0), 0);
+
+  if (execSeconds === 0 && estimate === 0) {
     return (
       <div className="pr-8 flex items-center h-full">
         <span className={`font-bold text-[9px] uppercase tracking-widest ${theme === 'dark' ? 'text-neutral-700' : 'text-gray-300'}`}>
@@ -564,8 +566,7 @@ function ProgressBar({ title, estimate, assignees, theme }: { title: string, est
     );
   }
 
-  const execSeconds = assignees.reduce((sum, a) => sum + (a.time_worked_seconds || 0), 0);
-  const progress = estimate > 0 ? Math.min(100, (execSeconds / estimate) * 100) : (execSeconds > 0 ? 100 : 0);
+  const progress = estimate > 0 ? Math.min(100, (execSeconds / estimate) * 100) : 100;
   const isOver = execSeconds > estimate && estimate > 0;
   const noEstimateButExec = estimate === 0 && execSeconds > 0;
 
